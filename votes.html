@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiberCraft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rouge-torii:#c8102e;
+  --rouge-sombre:#7a1220;
+  --rouge-braise:#e0432f;
+  --encre:#1c1512;
+  --washi:#7d7272;
+  --washi-clair:#faf5ea;
+  --or:#d02316;
+  --or-clair:#d02316;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--encre);
+  color:var(--washi-clair);
+  font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
+  overflow-x:hidden;
+}
+::selection{background:var(--rouge-torii);color:var(--washi-clair);}
+
+.fond-motif{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  opacity:0.05;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 20px 20px, var(--or) 2px, transparent 2px);
+  background-size:40px 40px;
+}
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 48px;
+  background:linear-gradient(180deg, rgba(20,14,12,0.92), rgba(20,14,12,0));
+  backdrop-filter:blur(2px);
+}
+.logo-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.logo-header img{
+  height:44px;
+  width:44px;
+  object-fit:contain;
+  border-radius:6px;
+}
+.logo-header .placeholder{
+  height:44px;
+  width:44px;
+  border:2px solid var(--or);
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Shippori Mincho',serif;
+  color:var(--or);
+  font-size:12px;
+  text-align:center;
+  line-height:1.1;
+}
+.logo-header span{
+  font-family:'Shippori Mincho',serif;
+  font-weight:700;
+  font-size:20px;
+  letter-spacing:0.05em;
+  color:var(--washi-clair);
+}
+nav{
+  display:flex;
+  gap:40px;
+}
+nav a{
+  position:relative;
+  color:var(--washi-clair);
+  text-decoration:none;
+  font-size:15px;
+  letter-spacing:0.08em;
+  padding:8px 4px;
+  transition:color 0.3s;
+}
+nav a::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:0;
+  height:2px;
+  background:var(--rouge-braise);
+  transition:width 0.3s ease;
+}
+nav a:hover{color:var(--or-clair);}
+nav a:hover::after{width:100%;}
+
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:140px 24px 80px;
+  z-index:1;
+}
+
+.torii{
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(1100px, 160vw);
+  opacity:0.16;
+  z-index:0;
+  pointer-events:none;
+}
+
+.emblem{
+  width:150px;
+  height:150px;
+  border:3px solid var(--or);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:36px;
+  position:relative;
+  z-index:2;
+  background:radial-gradient(circle, rgba(200,16,46,0.18), transparent 70%);
+}
+.emblem img{
+  width:112px;
+  height:112px;
+  object-fit:contain;
+  border-radius:50%;
+}
+.emblem .placeholder{
+  font-family:'Shippori Mincho',serif;
+  color:var(--or-clair);
+  font-size:14px;
+  text-align:center;
+  line-height:1.4;
+  padding:0 12px;
+}
+
+.eyebrow{
+  font-family:'Shippori Mincho',serif;
+  color:var(--rouge-braise);
+  letter-spacing:0.35em;
+  font-size:13px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  z-index:2;
+}
+
+h1{
+  font-family:'Shippori Mincho',serif;
+  font-weight:800;
+  font-size:clamp(38px, 6vw, 68px);
+  letter-spacing:0.02em;
+  color:var(--washi-clair);
+  z-index:2;
+  margin-bottom:8px;
+}
+h1 .rouge{color:var(--rouge-braise);}
+
+.trait{
+  width:80px;
+  height:3px;
+  background:linear-gradient(90deg, transparent, var(--or), transparent);
+  margin:28px 0;
+  z-index:2;
+}
+
+.presentation{
+  max-width:640px;
+  font-size:16px;
+  line-height:1.9;
+  color:#e6dcc9;
+  z-index:2;
+  margin-bottom:44px;
+}
+.presentation[contenteditable]{
+  outline:none;
+  border:1px dashed rgba(201,162,75,0.3);
+  padding:16px 20px;
+  border-radius:4px;
+}
+
+.bouton-vote{
+  position:relative;
+  z-index:2;
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  background:var(--rouge-torii);
+  color:var(--washi-clair);
+  font-family:'Shippori Mincho',serif;
+  font-weight:700;
+  font-size:17px;
+  letter-spacing:0.06em;
+  padding:18px 44px;
+  border-radius:2px;
+  text-decoration:none;
+  border:1px solid var(--rouge-braise);
+  box-shadow:0 8px 30px rgba(200,16,46,0.35);
+  transition:transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.bouton-vote:hover{
+  background:var(--rouge-braise);
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(224,67,47,0.5);
+}
+.bouton-vote svg{
+  width:18px;
+  height:18px;
+}
+
+.vagues{
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:90px;
+  background:var(--washi);
+  overflow:hidden;
+}
+.vagues svg{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:100%;
+}
+
+footer{
+  background:var(--washi);
+  color:var(--encre);
+  text-align:center;
+  padding:28px 24px 34px;
+  font-size:13px;
+  letter-spacing:0.05em;
+}
+footer span{color:var(--rouge-torii);font-weight:600;}
+
+@media (max-width:640px){
+  header{padding:16px 20px;}
+  nav{gap:20px;}
+  .logo-header span{display:none;}
+  nav a{font-size:13px;}
+}
+</style>
+</head>
+<body>
+
+<div class="fond-motif"></div>
+
+<header>
+  <div class="logo-header">
+  </div>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="#capes">Capes</a>
+    <a href="wiki.html">Wiki</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <svg class="torii" viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+  </svg>
+
+  <div class="eyebrow">Bienvenue sur</div>
+
+  <div class="emblem">
+  <img
+    class="logo"
+    src="https://i.imgur.com/1DCbtsk.png"
+    alt="Logo">
+</div>
+
+  <h1><span class="rouge">LiberCraft</span></h1>
+  <div class="trait"></div>
+
+  <p class="presentation" contenteditable="true">
+    LiberCraft est un PVP-faction moddé sans aucune boutique avec de l'argent IRL. Notre objectif est de créer une expérience de jeu égale pour tous les joueurs !
+  </p>
+
+  <a href="https://serveur-prive.net/minecraft/libercraft/vote" target="_blank" rel="noopener noreferrer" class="bouton-vote">
+       <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/>
+    </svg>
+    Site #1 (1h30)
+  </a>
+
+  <a href="https://serveur-minecraft-vote.fr/serveur/2471/voter" target="_blank" rel="noopener noreferrer" class="bouton-vote">
+       <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/>
+    </svg>
+    Site #2 (1h30)
+  </a>
+
+  <a href="https://top-serveurs.net/minecraft/vote/libercraft" target="_blank" rel="noopener noreferrer" class="bouton-vote">
+       <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/>
+    </svg>
+    Site #3 (2h00)
+  </a>
+
+  <a href="https://serveur-minecraft.com/5090" target="_blank" rel="noopener noreferrer" class="bouton-vote">
+       <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/>
+    </svg>
+    Site #4 (3h00)
+  </a>
+</section>
+
+
+<footer>
+  Premier PVP-Faction 100% Farm2Win <span></span>
+</footer>
+
+</body>
+</html>

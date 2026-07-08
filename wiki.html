@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiberCraft — Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rouge-torii:#c8102e;
+  --rouge-sombre:#7a1220;
+  --rouge-braise:#e0432f;
+  --encre:#1c1512;
+  --washi:#7d7272;
+  --washi-clair:#faf5ea;
+  --or:#d02316;
+  --or-clair:#d02316;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--encre);
+  color:var(--washi-clair);
+  font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
+  overflow-x:hidden;
+}
+::selection{background:var(--rouge-torii);color:var(--washi-clair);}
+
+.fond-motif{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  opacity:0.05;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 20px 20px, var(--or) 2px, transparent 2px);
+  background-size:40px 40px;
+}
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 48px;
+  background:linear-gradient(180deg, rgba(20,14,12,0.92), rgba(20,14,12,0));
+  backdrop-filter:blur(2px);
+}
+.logo-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+nav{
+  display:flex;
+  gap:40px;
+}
+nav a{
+  position:relative;
+  color:var(--washi-clair);
+  text-decoration:none;
+  font-size:15px;
+  letter-spacing:0.08em;
+  padding:8px 4px;
+  transition:color 0.3s;
+}
+nav a::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:0;
+  height:2px;
+  background:var(--rouge-braise);
+  transition:width 0.3s ease;
+}
+nav a:hover{color:var(--or-clair);}
+nav a:hover::after{width:100%;}
+nav a.actif{color:var(--rouge-braise);}
+nav a.actif::after{width:100%;}
+
+main{
+  position:relative;
+  z-index:1;
+  padding:160px 24px 100px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.entete-page{
+  text-align:center;
+  margin-bottom:64px;
+}
+.eyebrow{
+  font-family:'Shippori Mincho',serif;
+  color:var(--rouge-braise);
+  letter-spacing:0.35em;
+  font-size:13px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+h1{
+  font-family:'Shippori Mincho',serif;
+  font-weight:800;
+  font-size:clamp(34px, 5vw, 54px);
+  letter-spacing:0.02em;
+  color:var(--washi-clair);
+  margin-bottom:16px;
+}
+h1 .rouge{color:var(--rouge-braise);}
+.trait{
+  width:80px;
+  height:3px;
+  background:linear-gradient(90deg, transparent, var(--or), transparent);
+  margin:24px auto;
+}
+.sous-texte{
+  max-width:600px;
+  margin:0 auto;
+  color:#e6dcc9;
+  font-size:15px;
+  line-height:1.8;
+}
+
+.grille-documents{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:32px;
+}
+
+.carte-document{
+  background:linear-gradient(160deg, rgba(200,16,46,0.07), rgba(28,21,18,0.4));
+  border:1px solid rgba(208,35,22,0.3);
+  border-radius:6px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.entete-document{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:22px 24px;
+  border-bottom:1px solid rgba(208,35,22,0.25);
+}
+.titre-document{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.titre-document svg{
+  width:26px;
+  height:26px;
+  stroke:var(--or-clair);
+  flex-shrink:0;
+}
+.titre-document .textes h2{
+  font-family:'Shippori Mincho',serif;
+  font-size:18px;
+  color:var(--washi-clair);
+  letter-spacing:0.02em;
+}
+.titre-document .textes p{
+  font-size:12px;
+  color:#a89b86;
+  margin-top:2px;
+}
+
+.lien-telechargement{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  border:1px solid rgba(224,67,47,0.4);
+  border-radius:2px;
+  color:var(--or-clair);
+  text-decoration:none;
+  transition:border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+  flex-shrink:0;
+}
+.lien-telechargement svg{
+  width:16px;
+  height:16px;
+}
+.lien-telechargement:hover{
+  border-color:var(--rouge-braise);
+  background:rgba(200,16,46,0.12);
+  color:var(--washi-clair);
+}
+
+.cadre-pdf{
+  position:relative;
+  width:100%;
+  height:640px;
+  background:#0f0b09;
+}
+.cadre-pdf iframe{
+  width:100%;
+  height:100%;
+  border:none;
+  display:block;
+}
+.cadre-pdf .repli{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding:24px;
+  text-align:center;
+  color:#a89b86;
+  font-size:13px;
+}
+.cadre-pdf .repli a{
+  color:var(--or-clair);
+  border-bottom:1px solid rgba(208,35,22,0.4);
+  text-decoration:none;
+}
+
+.section-avancee{
+  margin-top:90px;
+  text-align:center;
+  padding:44px 24px;
+  border:1px dashed rgba(208,35,22,0.35);
+  border-radius:6px;
+  background:rgba(250,245,234,0.02);
+}
+.section-avancee h2{
+  font-family:'Shippori Mincho',serif;
+  font-size:22px;
+  color:var(--or-clair);
+  margin-bottom:12px;
+}
+.section-avancee p{
+  max-width:520px;
+  margin:0 auto;
+  font-size:13.5px;
+  color:#cfc4b1;
+  line-height:1.8;
+}
+
+.vagues{
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:90px;
+  background:var(--washi);
+  overflow:hidden;
+  margin-top:100px;
+}
+.vagues svg{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:100%;
+}
+
+footer{
+  background:var(--washi);
+  color:var(--encre);
+  text-align:center;
+  padding:28px 24px 34px;
+  font-size:13px;
+  letter-spacing:0.05em;
+}
+
+@media (max-width:900px){
+  .grille-documents{grid-template-columns:1fr;}
+  .cadre-pdf{height:520px;}
+}
+@media (max-width:640px){
+  header{padding:16px 20px;}
+  nav{gap:20px;}
+  nav a{font-size:13px;}
+  main{padding:140px 18px 80px;}
+  .entete-document{flex-wrap:wrap;}
+}
+</style>
+</head>
+<body>
+
+<div class="fond-motif"></div>
+
+<header>
+  <div class="logo-header">
+    <img src="https://i.imgur.com/1DCbtsk.png" alt="Logo" height="40">
+  </div>
+  <nav>
+    <a href="index.html">Votes</a>
+    <a href="capes.html">Capes</a>
+    <a href="wiki.html" class="actif">Wiki</a>
+  </nav>
+</header>
+
+<main>
+  <div class="entete-page">
+    <div class="eyebrow">Documentation</div>
+    <h1>Le <span class="rouge">Wiki</span></h1>
+    <div class="trait"></div>
+    <p class="sous-texte">
+      Retrouve ici le règlement du serveur ainsi que le wiki complet de LiberCraft. Consulte-les directement en ligne ou télécharge-les.
+    </p>
+  </div>
+
+  <div class="grille-documents">
+    <div class="carte-document">
+      <div class="entete-document">
+        <div class="titre-document">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+          </svg>
+          <div class="textes">
+            <h2>Règlement</h2>
+            <p>Règles officielles du serveur</p>
+          </div>
+        </div>
+        <a class="lien-telechargement" href="reglement.pdf" download title="Télécharger le règlement">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+        </a>
+      </div>
+      <div class="cadre-pdf">
+        <iframe src="reglement.pdf" title="Règlement du serveur"></iframe>
+      </div>
+    </div>
+
+    <div class="carte-document">
+      <div class="entete-document">
+        <div class="titre-document">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V4a2 2 0 00-2-2H6.5A2.5 2.5 0 004 4.5v15z"/>
+          </svg>
+          <div class="textes">
+            <h2>Wiki du serveur</h2>
+            <p>Guides, mécaniques et lore</p>
+          </div>
+        </div>
+        <a class="lien-telechargement" href="wiki.pdf" download title="Télécharger le wiki">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+        </a>
+      </div>
+      <div class="cadre-pdf">
+        <iframe src="wiki.pdf" title="Wiki du serveur"></iframe>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<footer>
+  Premier PVP-Faction 100% Farm2Win
+</footer>
+
+</body>
+</html>

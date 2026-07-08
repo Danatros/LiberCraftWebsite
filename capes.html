@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiberCraft — Capes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/skinview3d@3.1.0/bundles/skinview3d.bundle.js"></script>
+<style>
+:root{
+  --rouge-torii:#c8102e;
+  --rouge-sombre:#7a1220;
+  --rouge-braise:#e0432f;
+  --encre:#1c1512;
+  --washi:#7d7272;
+  --washi-clair:#faf5ea;
+  --or:#d02316;
+  --or-clair:#d02316;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--encre);
+  color:var(--washi-clair);
+  font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
+  overflow-x:hidden;
+}
+::selection{background:var(--rouge-torii);color:var(--washi-clair);}
+
+.fond-motif{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  opacity:0.05;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 20px 20px, var(--or) 2px, transparent 2px);
+  background-size:40px 40px;
+}
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 48px;
+  background:linear-gradient(180deg, rgba(20,14,12,0.92), rgba(20,14,12,0));
+  backdrop-filter:blur(2px);
+}
+.logo-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+nav{
+  display:flex;
+  gap:40px;
+}
+nav a{
+  position:relative;
+  color:var(--washi-clair);
+  text-decoration:none;
+  font-size:15px;
+  letter-spacing:0.08em;
+  padding:8px 4px;
+  transition:color 0.3s;
+}
+nav a::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:0;
+  height:2px;
+  background:var(--rouge-braise);
+  transition:width 0.3s ease;
+}
+nav a:hover{color:var(--or-clair);}
+nav a:hover::after{width:100%;}
+nav a.actif{color:var(--rouge-braise);}
+nav a.actif::after{width:100%;}
+
+main{
+  position:relative;
+  z-index:1;
+  padding:160px 24px 100px;
+  max-width:920px;
+  margin:0 auto;
+}
+
+.entete-page{
+  text-align:center;
+  margin-bottom:64px;
+}
+.eyebrow{
+  font-family:'Shippori Mincho',serif;
+  color:var(--rouge-braise);
+  letter-spacing:0.35em;
+  font-size:13px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+h1{
+  font-family:'Shippori Mincho',serif;
+  font-weight:800;
+  font-size:clamp(34px, 5vw, 54px);
+  letter-spacing:0.02em;
+  color:var(--washi-clair);
+  margin-bottom:16px;
+}
+h1 .rouge{color:var(--rouge-braise);}
+.trait{
+  width:80px;
+  height:3px;
+  background:linear-gradient(90deg, transparent, var(--or), transparent);
+  margin:24px auto;
+}
+.sous-texte{
+  max-width:560px;
+  margin:0 auto;
+  color:#e6dcc9;
+  font-size:15px;
+  line-height:1.8;
+}
+
+.grille-capes{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px;
+}
+
+.carte-cape{
+  background:linear-gradient(160deg, rgba(200,16,46,0.07), rgba(28,21,18,0.4));
+  border:1px solid rgba(208,35,22,0.3);
+  border-radius:6px;
+  overflow:hidden;
+  position:relative;
+}
+.carte-cape::before{
+  content:'';
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  bottom:10px;
+  border:1px solid rgba(250,245,234,0.06);
+  pointer-events:none;
+  z-index:1;
+}
+
+.apercu-cape{
+  width:100%;
+  height:260px;
+  display:block;
+}
+
+.info-cape{
+  padding:18px 22px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-top:1px solid rgba(208,35,22,0.25);
+}
+.info-cape .nom{
+  font-family:'Shippori Mincho',serif;
+  font-size:16px;
+  color:var(--washi-clair);
+  letter-spacing:0.02em;
+}
+.info-cape .nom small{
+  display:block;
+  margin-top:4px;
+  font-size:11.5px;
+  color:#a89b86;
+  font-family:'Zen Kaku Gothic New', sans-serif;
+  letter-spacing:0.03em;
+}
+.info-cape .nom small a{
+  color:var(--or-clair);
+  text-decoration:none;
+  border-bottom:1px solid rgba(208,35,22,0.4);
+  transition:color 0.25s ease, border-color 0.25s ease;
+}
+.info-cape .nom small a:hover{
+  color:var(--washi-clair);
+  border-color:var(--rouge-braise);
+}
+.prix{
+  font-family:'Shippori Mincho',serif;
+  font-weight:700;
+  font-size:18px;
+  color:var(--rouge-braise);
+  white-space:nowrap;
+  border:1px solid rgba(224,67,47,0.4);
+  padding:8px 16px;
+  border-radius:2px;
+}
+
+.pagination{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+  margin-top:64px;
+}
+.fleche-page{
+  width:46px;
+  height:46px;
+  border:1px solid rgba(208,35,22,0.5);
+  border-radius:50%;
+  background:transparent;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+.fleche-page svg{
+  width:18px;
+  height:18px;
+  stroke:var(--washi-clair);
+}
+.fleche-page:hover:not(:disabled){
+  border-color:var(--rouge-braise);
+  background:rgba(200,16,46,0.12);
+  transform:translateY(-2px);
+}
+.fleche-page:disabled{
+  opacity:0.25;
+  cursor:default;
+}
+.indicateur-page{
+  font-family:'Shippori Mincho',serif;
+  font-size:15px;
+  letter-spacing:0.08em;
+  color:#e6dcc9;
+  min-width:80px;
+  text-align:center;
+}
+.indicateur-page span{color:var(--rouge-braise);}
+
+.vagues{
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:90px;
+  background:var(--washi);
+  overflow:hidden;
+  margin-top:100px;
+}
+.vagues svg{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:100%;
+}
+
+footer{
+  background:var(--washi);
+  color:var(--encre);
+  text-align:center;
+  padding:28px 24px 34px;
+  font-size:13px;
+  letter-spacing:0.05em;
+}
+
+@media (max-width:700px){
+  .grille-capes{grid-template-columns:1fr;}
+  main{padding:140px 18px 80px;}
+  header{padding:16px 20px;}
+  nav{gap:20px;}
+  nav a{font-size:13px;}
+}
+</style>
+</head>
+<body>
+
+<div class="fond-motif"></div>
+
+<header>
+  <div class="logo-header">
+    <img src="https://i.imgur.com/1DCbtsk.png" alt="Logo" height="40">
+  </div>
+  <nav>
+    <a href="index.html">Votes</a>
+    <a href="capes.html" class="actif">Capes</a>
+    <a href="#wiki">Wiki</a>
+  </nav>
+</header>
+
+<main>
+  <div class="entete-page">
+    <div class="eyebrow">Boutique</div>
+    <h1>Nos <span class="rouge">Capes</span></h1>
+    <div class="trait"></div>
+    <p class="sous-texte">
+      Les capes sont l'unique source de revenus de LiberCraft. Elles n'apportent aucun avantage en jeu, seulement du style.
+    </p>
+  </div>
+
+  <div class="grille-capes" id="grille-capes"></div>
+
+  <div class="pagination">
+    <button class="fleche-page" id="page-precedente">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="indicateur-page">Page <span id="page-actuelle">1</span> / <span id="page-totale">1</span></div>
+    <button class="fleche-page" id="page-suivante">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</main>
+
+<div class="vagues">
+  <svg viewBox="0 0 1200 90" preserveAspectRatio="none">
+    <path d="M0,45 C150,10 350,80 600,45 C850,10 1050,80 1200,45 L1200,90 L0,90 Z" fill="#1c1512"/>
+  </svg>
+</div>
+
+<footer>
+  Premier PVP-Faction 100% Farm2Win
+</footer>
+
+<script>
+const skinURL = "https://minotar.net/skin/MHF_Steve";
+const capesParPage = 12;
+
+const capesServeur = [
+  { nom: "Liber Night", description: "Cape de la V3", prix: "4,99 €", url: "https://i.postimg.cc/qgT2QZq6/libernight.png" },
+  { nom: "Stonks", description: "Edition meme", prix: "4,99 €", url: "https://i.postimg.cc/569LWY8h/stonks.png" },
+  { nom: "Prague", description: "Edition Capital", prix: "4,99 €", url: "https://i.postimg.cc/nMGBWY9d/prague.png" },
+  { nom: "Oslo", description: "Edition Capital", prix: "4,99 €", url: "https://i.postimg.cc/9zYZktwg/oslo.png" },
+  { nom: "Copenhague", description: "Edition Capital", prix: "4,99 €", url: "https://i.postimg.cc/4HPf13dB/copenhague.png" },
+  { nom: "Dublin", description: "Edition Capital", prix: "4,99 €", url: "https://i.postimg.cc/Wtv0Sfzj/dublin.png" },
+  { nom: "France", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/pyHKk1rd/fr.png" },
+  { nom: "Argentine", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/N2BGTXg7/ar.png" },
+  { nom: "Belgique", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/Wq8N743D/be.png" },
+  { nom: "Bulgarie", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/cthxcJHt/bg.png" },
+  { nom: "Canada", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/3018ZwR2/ca.png" },
+  { nom: "Allemagne", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/V0gfFN63/de.png" },
+  { nom: "Mexique", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/kDvKHFRv/mx.png" },
+  { nom: "UK", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/D8fL3Jqh/uk.png" },
+  { nom: "US", description: "Edition Drapeau", prix: "1,99 €", url: "https://i.postimg.cc/cr1wGgQN/us.png" },
+  { nom: "Night", description: "Edition AterCape", prix: "4,99 €", url: "https://i.postimg.cc/dDjrfmZ6/Night.png" },
+  { nom: "Purple Galaxy", description: "Edition AterCape", prix: "4,99 €", url: "https://i.postimg.cc/Wtwgy6Jj/purple-galaxy.png" },
+  { nom: "Inconstance Gold", description: "Cape du partenaire Inconstance", prix: "4,99 €", url: "https://i.postimg.cc/Mf56YGTF/danatrogold.png", lien: "https://www.youtube.com/@InconstanceMC" },
+  { nom: "Inconstance White", description: "Cape du partenaire Inconstance", prix: "4,99 €", url: "https://i.postimg.cc/N2Dsx0Mn/danatrowhite.png", lien: "https://www.youtube.com/@InconstanceMC" },
+
+];
+
+const grille = document.getElementById("grille-capes");
+const boutonPrecedent = document.getElementById("page-precedente");
+const boutonSuivant = document.getElementById("page-suivante");
+const indicateurActuel = document.getElementById("page-actuelle");
+const indicateurTotal = document.getElementById("page-totale");
+
+let pageActuelle = 1;
+const pageTotale = Math.max(1, Math.ceil(capesServeur.length / capesParPage));
+indicateurTotal.textContent = pageTotale;
+
+let visionneusesActives = [];
+
+function nettoyerVisionneuses(){
+  visionneusesActives.forEach(v => v.dispose());
+  visionneusesActives = [];
+}
+
+function afficherPage(page){
+  nettoyerVisionneuses();
+  grille.innerHTML = "";
+
+  const debut = (page - 1) * capesParPage;
+  const capesPage = capesServeur.slice(debut, debut + capesParPage);
+
+  capesPage.forEach(cape => {
+    const carte = document.createElement("div");
+    carte.className = "carte-cape";
+    const description = cape.lien
+      ? `<small><a href="${cape.lien}" target="_blank" rel="noopener">${cape.description}</a></small>`
+      : `<small>${cape.description}</small>`;
+
+    carte.innerHTML = `
+      <canvas class="apercu-cape"></canvas>
+      <div class="info-cape">
+        <div class="nom">${cape.nom}${description}</div>
+        <div class="prix">${cape.prix}</div>
+      </div>
+    `;
+    grille.appendChild(carte);
+
+    const visionneuse = new skinview3d.SkinViewer({
+      canvas: carte.querySelector(".apercu-cape"),
+      width: 400,
+      height: 260,
+      skin: skinURL,
+      cape: cape.url
+    });
+    visionneuse.camera.position.set(18, 6, 28);
+    visionneuse.autoRotate = true;
+    visionneuse.autoRotateSpeed = 1;
+    visionneuse.background = null;
+    visionneuse.renderer.setClearColor(0x000000, 0);
+    visionneuse.animation = new skinview3d.IdleAnimation();
+
+    visionneusesActives.push(visionneuse);
+  });
+
+  indicateurActuel.textContent = page;
+  boutonPrecedent.disabled = page === 1;
+  boutonSuivant.disabled = page === pageTotale;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+boutonPrecedent.addEventListener("click", () => {
+  if(pageActuelle > 1){
+    pageActuelle--;
+    afficherPage(pageActuelle);
+  }
+});
+
+boutonSuivant.addEventListener("click", () => {
+  if(pageActuelle < pageTotale){
+    pageActuelle++;
+    afficherPage(pageActuelle);
+  }
+});
+
+afficherPage(pageActuelle);
+</script>
+
+</body>
+</html>
