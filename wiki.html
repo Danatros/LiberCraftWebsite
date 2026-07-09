@@ -12,6 +12,7 @@
   --rouge-sombre:#7a1220;
   --rouge-braise:#e0432f;
   --encre:#1c1512;
+  --encre-clair:#241a16;
   --washi:#7d7272;
   --washi-clair:#faf5ea;
   --or:#d02316;
@@ -88,13 +89,13 @@ main{
   position:relative;
   z-index:1;
   padding:160px 24px 100px;
-  max-width:1200px;
+  max-width:1300px;
   margin:0 auto;
 }
 
 .entete-page{
   text-align:center;
-  margin-bottom:64px;
+  margin-bottom:56px;
 }
 .eyebrow{
   font-family:'Shippori Mincho',serif;
@@ -127,12 +128,38 @@ h1 .rouge{color:var(--rouge-braise);}
   line-height:1.8;
 }
 
-.grille-documents{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:32px;
+/* ===== Bascule Règlement / Wiki ===== */
+.bascule-docs{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin-bottom:56px;
+  flex-wrap:wrap;
+}
+.bouton-bascule{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 26px;
+  background:rgba(250,245,234,0.03);
+  border:1px solid rgba(208,35,22,0.3);
+  border-radius:4px;
+  color:#e6dcc9;
+  font-size:14px;
+  letter-spacing:0.04em;
+  text-decoration:none;
+  cursor:pointer;
+  transition:all 0.25s ease;
+}
+.bouton-bascule svg{width:18px;height:18px;stroke:var(--or-clair);flex-shrink:0;}
+.bouton-bascule:hover{border-color:var(--rouge-braise);background:rgba(200,16,46,0.1);}
+.bouton-bascule.actif{
+  background:linear-gradient(160deg, rgba(200,16,46,0.18), rgba(28,21,18,0.4));
+  border-color:var(--rouge-braise);
+  color:var(--washi-clair);
 }
 
+/* ===== Règlement (document PDF conservé) ===== */
 .carte-document{
   background:linear-gradient(160deg, rgba(200,16,46,0.07), rgba(28,21,18,0.4));
   border:1px solid rgba(208,35,22,0.3);
@@ -140,8 +167,9 @@ h1 .rouge{color:var(--rouge-braise);}
   overflow:hidden;
   display:flex;
   flex-direction:column;
+  max-width:820px;
+  margin:0 auto 90px;
 }
-
 .entete-document{
   display:flex;
   align-items:center;
@@ -172,7 +200,6 @@ h1 .rouge{color:var(--rouge-braise);}
   color:#a89b86;
   margin-top:2px;
 }
-
 .lien-telechargement{
   display:flex;
   align-items:center;
@@ -186,46 +213,306 @@ h1 .rouge{color:var(--rouge-braise);}
   transition:border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
   flex-shrink:0;
 }
-.lien-telechargement svg{
-  width:16px;
-  height:16px;
-}
+.lien-telechargement svg{width:16px;height:16px;}
 .lien-telechargement:hover{
   border-color:var(--rouge-braise);
   background:rgba(200,16,46,0.12);
   color:var(--washi-clair);
 }
+.cadre-pdf{position:relative;width:100%;height:640px;background:#0f0b09;}
+.cadre-pdf iframe{width:100%;height:100%;border:none;display:block;}
 
-.cadre-pdf{
-  position:relative;
-  width:100%;
-  height:640px;
-  background:#0f0b09;
+/* ===== Layout Wiki intégré ===== */
+.mise-en-page-wiki{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:48px;
+  align-items:start;
 }
-.cadre-pdf iframe{
-  width:100%;
-  height:100%;
-  border:none;
+.sommaire{
+  position:sticky;
+  top:110px;
+  max-height:calc(100vh - 140px);
+  overflow-y:auto;
+  padding-right:8px;
+  border-right:1px solid rgba(208,35,22,0.2);
+}
+.sommaire::-webkit-scrollbar{width:5px;}
+.sommaire::-webkit-scrollbar-thumb{background:rgba(208,35,22,0.4);border-radius:4px;}
+.sommaire-titre{
+  font-family:'Shippori Mincho',serif;
+  color:var(--rouge-braise);
+  font-size:12px;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+.sommaire ul{list-style:none;}
+.sommaire li{margin-bottom:2px;}
+.sommaire a{
   display:block;
-}
-.cadre-pdf .repli{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
-  padding:24px;
-  text-align:center;
-  color:#a89b86;
+  padding:7px 10px;
+  color:#c9bda8;
+  text-decoration:none;
   font-size:13px;
+  border-left:2px solid transparent;
+  transition:all 0.2s ease;
 }
-.cadre-pdf .repli a{
+.sommaire a:hover{color:var(--washi-clair);border-left-color:rgba(224,67,47,0.5);}
+.sommaire .niv2 a{padding-left:22px;font-size:12.5px;color:#a89b86;}
+.sommaire .niv1-titre{
+  padding:7px 10px;
   color:var(--or-clair);
-  border-bottom:1px solid rgba(208,35,22,0.4);
+  font-size:13.5px;
+  font-weight:700;
+  margin-top:10px;
+}
+
+.contenu-wiki > section{
+  margin-bottom:70px;
+  scroll-margin-top:110px;
+}
+.contenu-wiki h2{
+  font-family:'Shippori Mincho',serif;
+  font-size:28px;
+  color:var(--washi-clair);
+  border-bottom:1px solid rgba(208,35,22,0.3);
+  padding-bottom:14px;
+  margin-bottom:22px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.contenu-wiki h2::before{
+  content:'';
+  width:6px;
+  height:22px;
+  background:var(--rouge-braise);
+  border-radius:2px;
+  flex-shrink:0;
+}
+.contenu-wiki h3{
+  font-family:'Shippori Mincho',serif;
+  font-size:20px;
+  color:var(--or-clair);
+  margin:36px 0 14px;
+}
+.contenu-wiki h4{
+  font-family:'Shippori Mincho',serif;
+  font-size:16px;
+  color:#e6dcc9;
+  margin:24px 0 10px;
+}
+.contenu-wiki p{
+  color:#cfc4b1;
+  font-size:14.5px;
+  line-height:1.85;
+  margin-bottom:14px;
+}
+.contenu-wiki p strong{color:var(--washi-clair);}
+.contenu-wiki em{color:#a89b86;}
+
+.encart-info{
+  background:rgba(250,245,234,0.03);
+  border-left:3px solid var(--rouge-braise);
+  border-radius:0 4px 4px 0;
+  padding:16px 20px;
+  margin:20px 0;
+  font-size:13.5px;
+  color:#cfc4b1;
+  line-height:1.8;
+}
+.encart-info strong{color:var(--or-clair);}
+
+/* Grille d'objets (minerais, outils, capes...) */
+.grille-objets{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+  gap:16px;
+  margin:20px 0 28px;
+}
+.carte-objet{
+  background:rgba(250,245,234,0.025);
+  border:1px solid rgba(208,35,22,0.22);
+  border-radius:6px;
+  padding:18px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  transition:border-color 0.25s ease, transform 0.25s ease;
+}
+.carte-objet:hover{border-color:rgba(224,67,47,0.5);transform:translateY(-2px);}
+.carte-objet img{
+  width:44px;height:44px;object-fit:contain;flex-shrink:0;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+}
+.carte-objet .infos h4{margin:0 0 4px;font-size:14px;color:var(--washi-clair);}
+.carte-objet .infos p{margin:0;font-size:12px;color:#a89b86;line-height:1.5;}
+
+/* Galerie de capes */
+.grille-capes{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+  gap:14px;
+  margin:16px 0 30px;
+}
+.carte-cape{
+  background:rgba(250,245,234,0.025);
+  border:1px solid rgba(208,35,22,0.22);
+  border-radius:6px;
+  padding:14px;
+  text-align:center;
+  transition:border-color 0.25s ease, transform 0.25s ease;
+}
+.carte-cape:hover{border-color:rgba(224,67,47,0.5);transform:translateY(-2px);}
+.carte-cape img{width:70px;height:70px;object-fit:contain;margin-bottom:8px;}
+.carte-cape .nom{font-size:12.5px;color:var(--washi-clair);font-weight:700;}
+.carte-cape .prix{font-size:11px;color:var(--or-clair);margin-top:2px;}
+.groupe-capes-titre{
+  font-size:12px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--rouge-braise);
+  margin:22px 0 4px;
+}
+
+/* Images de craft / illustrations */
+.grille-crafts{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:16px;
+  margin:16px 0 28px;
+}
+.carte-craft{
+  background:#0f0b09;
+  border:1px solid rgba(208,35,22,0.22);
+  border-radius:6px;
+  overflow:hidden;
+}
+.carte-craft .legende{
+  padding:10px 14px;
+  font-size:12.5px;
+  color:var(--or-clair);
+  font-weight:700;
+  border-bottom:1px solid rgba(208,35,22,0.2);
+}
+.carte-craft img{
+  width:100%;
+  display:block;
+  background:#171110;
+  padding:12px;
+  object-fit:contain;
+  max-height:260px;
+}
+.illustration-large{
+  width:100%;
+  max-width:720px;
+  display:block;
+  margin:20px auto;
+  border-radius:6px;
+  border:1px solid rgba(208,35,22,0.25);
+}
+
+/* Tableaux */
+.zone-tableau{overflow-x:auto;margin:16px 0 28px;}
+table.tableau-stylise{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  min-width:480px;
+}
+table.tableau-stylise th{
+  background:rgba(200,16,46,0.12);
+  color:var(--washi-clair);
+  text-align:left;
+  padding:12px 16px;
+  font-weight:700;
+  letter-spacing:0.03em;
+  border-bottom:1px solid rgba(208,35,22,0.35);
+}
+table.tableau-stylise td{
+  padding:11px 16px;
+  color:#cfc4b1;
+  border-bottom:1px solid rgba(208,35,22,0.12);
+  vertical-align:top;
+}
+table.tableau-stylise tr:hover td{background:rgba(250,245,234,0.02);}
+table.tableau-stylise code{
+  background:rgba(208,35,22,0.12);
+  color:var(--or-clair);
+  padding:2px 7px;
+  border-radius:3px;
+  font-size:12.5px;
+}
+
+/* Grille des grades */
+.grille-grades{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+  gap:12px;
+  margin:16px 0 28px;
+}
+.carte-grade{
+  background:rgba(250,245,234,0.025);
+  border:1px solid rgba(208,35,22,0.22);
+  border-radius:6px;
+  padding:16px;
+}
+.carte-grade h4{
+  font-family:'Shippori Mincho',serif;
+  color:var(--or-clair);
+  font-size:15px;
+  margin-bottom:10px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(208,35,22,0.2);
+}
+.carte-grade ul{list-style:none;font-size:12px;color:#cfc4b1;line-height:1.9;}
+.carte-grade li::before{content:'▸ ';color:var(--rouge-braise);}
+.carte-grade .prix{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid rgba(208,35,22,0.2);
+  font-size:12px;
+  color:var(--washi-clair);
+}
+.carte-grade .prix b{color:var(--or-clair);}
+
+/* Kits */
+.grille-kits{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+  gap:16px;
+  margin:16px 0 28px;
+}
+.carte-kit{
+  background:linear-gradient(160deg, rgba(200,16,46,0.06), rgba(28,21,18,0.4));
+  border:1px solid rgba(208,35,22,0.25);
+  border-radius:6px;
+  padding:18px;
+}
+.carte-kit .entete-kit{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:10px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(208,35,22,0.2);
+}
+.carte-kit h4{font-family:'Shippori Mincho',serif;color:var(--washi-clair);font-size:15px;}
+.carte-kit .prix-kit{font-size:12px;color:var(--or-clair);font-weight:700;}
+.carte-kit ul{list-style:none;font-size:12.5px;color:#cfc4b1;line-height:1.9;}
+.carte-kit li::before{content:'▸ ';color:var(--rouge-braise);}
+
+.retour-haut{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:8px;
+  font-size:12px;
+  color:#a89b86;
   text-decoration:none;
 }
+.retour-haut:hover{color:var(--or-clair);}
 
 .section-avancee{
   margin-top:90px;
@@ -240,29 +527,16 @@ h1 .rouge{color:var(--rouge-braise);}
   font-size:22px;
   color:var(--or-clair);
   margin-bottom:12px;
+  border:none;
+  padding:0;
 }
+.section-avancee h2::before{display:none;}
 .section-avancee p{
   max-width:520px;
   margin:0 auto;
   font-size:13.5px;
   color:#cfc4b1;
   line-height:1.8;
-}
-
-.vagues{
-  position:relative;
-  z-index:1;
-  width:100%;
-  height:90px;
-  background:var(--washi);
-  overflow:hidden;
-  margin-top:100px;
-}
-.vagues svg{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:100%;
 }
 
 footer{
@@ -272,11 +546,22 @@ footer{
   padding:28px 24px 34px;
   font-size:13px;
   letter-spacing:0.05em;
+  position:relative;
+  z-index:1;
+  margin-top:100px;
 }
 
-@media (max-width:900px){
-  .grille-documents{grid-template-columns:1fr;}
-  .cadre-pdf{height:520px;}
+@media (max-width:980px){
+  .mise-en-page-wiki{grid-template-columns:1fr;}
+  .sommaire{
+    position:relative;
+    top:0;
+    max-height:none;
+    border-right:none;
+    border-bottom:1px solid rgba(208,35,22,0.2);
+    padding-bottom:20px;
+    margin-bottom:20px;
+  }
 }
 @media (max-width:640px){
   header{padding:16px 20px;}
@@ -284,6 +569,7 @@ footer{
   nav a{font-size:13px;}
   main{padding:140px 18px 80px;}
   .entete-document{flex-wrap:wrap;}
+  .cadre-pdf{height:420px;}
 }
 </style>
 </head>
@@ -296,7 +582,8 @@ footer{
     <img src="https://i.imgur.com/1DCbtsk.png" alt="Logo" height="40">
   </div>
   <nav>
-    <a href="index.html">Votes</a>
+    <a href="index.html">Accueil</a>
+    <a href="vote.html">Votes</a>
     <a href="capes.html">Capes</a>
     <a href="wiki.html" class="actif">Wiki</a>
   </nav>
@@ -308,53 +595,498 @@ footer{
     <h1>Le <span class="rouge">Wiki</span></h1>
     <div class="trait"></div>
     <p class="sous-texte">
-      Retrouve ici le règlement du serveur ainsi que le wiki complet de LiberCraft. Consulte-les directement en ligne ou télécharge-les.
+      Retrouve ici le règlement du serveur ainsi que le wiki complet de LiberCraft, directement consultable sur cette page.
     </p>
   </div>
 
-  <div class="grille-documents">
-    <div class="carte-document">
-      <div class="entete-document">
-        <div class="titre-document">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-          </svg>
-          <div class="textes">
-            <h2>Règlement</h2>
-            <p>Règles officielles du serveur</p>
-          </div>
-        </div>
-        <a class="lien-telechargement" href="reglement.pdf" download title="Télécharger le règlement">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
-        </a>
-      </div>
-      <div class="cadre-pdf">
-        <iframe src="reglement.pdf" title="Règlement du serveur"></iframe>
-      </div>
-    </div>
+  <div class="bascule-docs">
+    <a href="#reglement" class="bouton-bascule">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+      Règlement
+    </a>
+    <a href="#wiki" class="bouton-bascule">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V4a2 2 0 00-2-2H6.5A2.5 2.5 0 004 4.5v15z"/></svg>
+      Wiki du serveur
+    </a>
+  </div>
 
-    <div class="carte-document">
-      <div class="entete-document">
-        <div class="titre-document">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V4a2 2 0 00-2-2H6.5A2.5 2.5 0 004 4.5v15z"/>
-          </svg>
-          <div class="textes">
-            <h2>Wiki du serveur</h2>
-            <p>Guides, mécaniques et lore</p>
-          </div>
+  <!-- ===== RÈGLEMENT ===== -->
+  <div id="reglement" class="carte-document">
+    <div class="entete-document">
+      <div class="titre-document">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+        </svg>
+        <div class="textes">
+          <h2>Règlement</h2>
+          <p>Règles officielles du serveur</p>
         </div>
-        <a class="lien-telechargement" href="wiki.pdf" download title="Télécharger le wiki">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
-        </a>
       </div>
-      <div class="cadre-pdf">
-        <iframe src="wiki.pdf" title="Wiki du serveur"></iframe>
-      </div>
+      <a class="lien-telechargement" href="reglement.pdf" download title="Télécharger le règlement">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+      </a>
+    </div>
+    <div class="cadre-pdf">
+      <iframe src="reglement.pdf" title="Règlement du serveur"></iframe>
     </div>
   </div>
-</main>
 
+  <!-- ===== WIKI INTÉGRÉ ===== -->
+  <div id="wiki" class="mise-en-page-wiki">
+    <aside class="sommaire">
+      <div class="sommaire-titre">Sommaire</div>
+      <ul>
+        <li><a href="#presentation">Présentation du serveur</a></li>
+        <li><a href="#launcher">Le Launcher</a></li>
+        <li class="niv1-titre">Le Gameplay</li>
+        <li class="niv2"><a href="#minerais">Les minerais</a></li>
+        <li class="niv2"><a href="#outils">Les outils</a></li>
+        <li class="niv2"><a href="#pvp">Le PVP</a></li>
+        <li class="niv2"><a href="#bases">Bases &amp; pillages</a></li>
+        <li class="niv2"><a href="#machines">Les Machines</a></li>
+        <li class="niv2"><a href="#warps">Les Warps</a></li>
+        <li><a href="#commandes">Commandes &amp; aides</a></li>
+        <li><a href="#tokens">Tokens, grades, capes &amp; kits</a></li>
+      </ul>
+    </aside>
+
+    <article class="contenu-wiki">
+
+      <section id="presentation">
+        <h2>Présentation du serveur</h2>
+        <p>LiberCraft est un serveur Minecraft <strong>Pvp-Faction moddé</strong> développé en 1.7.10. Créé en 2024, le serveur est à l'origine un serveur Vanilla 1.8.9. Depuis 2024, l'objectif du serveur est resté le même : créer un endroit <strong>sans Pay2Win</strong>, c'est-à-dire un environnement dans lequel l'argent réel n'entre pas en compte dans les classements, étant donné qu'il n'y a aucun moyen d'obtenir des avantages en jeu contre de l'argent.</p>
+        <p>Le serveur se déroule dans un univers japonais durant la <strong>période Edo</strong>. Actuellement, des Vikings sont entrés sur le serveur afin d'envahir le Japon. Ces deux univers s'associent ainsi avec des événements tournés sur ces deux mondes. Vous pouvez ainsi obtenir une armure d'évènement « Viking » (équivalente à l'armure en Malachite).</p>
+        <div class="encart-info">Le serveur est actuellement en <strong>BETA</strong>. De nombreuses fonctionnalités sont encore en cours de développement. Tout ce qui est décrit dans ce Wiki est dès à présent disponible ! De nombreux ajouts arriveront par la suite : métiers, nouveaux évènements, nouvelles machines, etc. L'équipe de développement reste à l'écoute de vos suggestions et de vos critiques bienveillantes pour la continuité du serveur !</div>
+      </section>
+
+      <section id="launcher">
+        <h2>Le Launcher</h2>
+        <p>Vous pouvez trouver le lien de téléchargement du launcher directement sur le Discord.</p>
+        <p>Le launcher va installer LiberCraft ici : <code style="background:rgba(208,35,22,0.12);color:var(--or-clair);padding:2px 8px;border-radius:3px;">%appdata%\.libercraft</code>. Vous pouvez ajouter un texture pack ou régler le gamma au maximum dans le fichier « option.txt ».</p>
+        <p>Afin de pouvoir jouer, vous devez inscrire votre pseudo et lancer le jeu (le premier lancement est plus long car le jeu s'installe). Pensez à ne pas changer les majuscules de votre pseudo — vous ne pourrez pas rejoindre le serveur avec un pseudo différent (par exemple, avec le pseudo « Steve » vous ne pourrez pas rejoindre le serveur avec le pseudo « steve »).</p>
+        <p>Enfin, lors de votre première connexion sur le serveur, vous allez devoir créer un mot de passe avec la commande <code style="background:rgba(208,35,22,0.12);color:var(--or-clair);padding:2px 8px;border-radius:3px;">/register [mot de passe] [mot de passe]</code>. Pensez à vous en souvenir afin de pouvoir vous reconnecter ensuite.</p>
+        <div class="encart-info">Vous êtes autorisé à utiliser <strong>trois doubles comptes</strong>.</div>
+      </section>
+
+      <section id="gameplay">
+        <h2>Le Gameplay</h2>
+
+        <section id="minerais">
+          <h3>Les minerais</h3>
+
+          <h4>L'Azurite</h4>
+          <p>L'Azurite est le premier minerai du serveur. Il est assez simple à trouver. Plus puissant que le diamant, vous pouvez combattre sans risque avec ! Il est trouvable à partir de la couche 16. Vous pouvez également obtenir de l'Azurite dans les minerais aléatoires.</p>
+          <div class="grille-objets">
+            <div class="carte-objet"><img src="assets/img/image2.png" alt="Azurite"><div class="infos"><h4>Azurite</h4><p>Minerai brut</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image3.png" alt="Minerai d'Azurite"><div class="infos"><h4>Minerai d'Azurite</h4><p>Trouvable à partir de la couche 16</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image4.jpeg" alt="Bloc d'Azurite"><div class="infos"><h4>Bloc d'Azurite</h4><p>Version compressée</p></div></div>
+          </div>
+
+          <h4>Le Lithium</h4>
+          <p>Le Lithium est un minerai beaucoup plus rare que l'Azurite. Il permet de crafter pleins d'objets, notamment les machines. Il est trouvable à partir de la couche 6.</p>
+          <div class="grille-objets">
+            <div class="carte-objet"><img src="assets/img/image5.png" alt="Lithium"><div class="infos"><h4>Lithium</h4><p>Minerai brut</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image6.png" alt="Minerai de Lithium"><div class="infos"><h4>Minerai de Lithium</h4><p>Trouvable à partir de la couche 6</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image7.png" alt="Bloc de Lithium"><div class="infos"><h4>Bloc de Lithium</h4><p>Version compressée</p></div></div>
+          </div>
+
+          <h4>Le Malachite</h4>
+          <p>Le Malachite est l'avant-dernier minerai du serveur. Il permet de crafter de nombreux objets rares. Il est uniquement trouvable dans les minerais aléatoires, ce qui le rend complexe à obtenir. Vous pouvez obtenir une pépite, un malachite ou un minerai directement dans les minerais aléatoires.</p>
+          <div class="grille-objets">
+            <div class="carte-objet"><img src="assets/img/image8.png" alt="Malachite"><div class="infos"><h4>Malachite</h4><p>Minerai brut</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image9.png" alt="Pépite de Malachite"><div class="infos"><h4>Pépite de Malachite</h4><p>Obtenue via minerai aléatoire</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image10.png" alt="Minerai de Malachite"><div class="infos"><h4>Minerai de Malachite</h4><p>Trouvable lors d'évènements</p></div></div>
+          </div>
+
+          <h4>Le Liberium</h4>
+          <p>Enfin, le Liberium. Il s'agit du dernier minerai du jeu. Il est très rare et s'obtient uniquement grâce aux minerais aléatoires, où seules les pépites sont obtenables.</p>
+          <div class="grille-objets">
+            <div class="carte-objet"><img src="assets/img/image11.png" alt="Lingot de Liberium"><div class="infos"><h4>Lingot de Liberium</h4><p>Ressource finale</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image12.png" alt="Pépite de Liberium"><div class="infos"><h4>Pépite de Liberium</h4><p>Uniquement via minerai aléatoire</p></div></div>
+          </div>
+
+          <h4>Minerai aléatoire</h4>
+          <p>Les minerais aléatoires sont trouvables à partir de la couche 6.</p>
+          <div class="grille-objets">
+            <div class="carte-objet"><img src="assets/img/image13.png" alt="Minerai aléatoire"><div class="infos"><h4>Minerai aléatoire</h4><p>Peut contenir Azurite, Lithium, Malachite ou Liberium</p></div></div>
+          </div>
+        </section>
+
+        <section id="outils">
+          <h3>Les outils</h3>
+
+          <h4>Outils en Azurite</h4>
+          <p>L'Azurite permet de fabriquer les premiers outils moddés du serveur :</p>
+          <div class="grille-objets">
+            <div class="carte-objet"><img src="assets/img/image14.png" alt="Pioche en Azurite"><div class="infos"><h4>Pioche en Azurite</h4><p>Plus puissante que la pioche en Diamant</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image15.png" alt="MultiTool en Azurite"><div class="infos"><h4>MultiTool en Azurite</h4><p>Réunit tous les outils en un seul</p></div></div>
+          </div>
+          <div class="grille-crafts">
+            <div class="carte-craft"><div class="legende">Craft — Pioche en Azurite</div><img src="assets/img/image16.jpeg" alt="Craft pioche en Azurite"></div>
+            <div class="carte-craft"><div class="legende">Craft — MultiTool en Azurite</div><img src="assets/img/image17.png" alt="Craft multitool en Azurite"></div>
+          </div>
+          <div class="encart-info">Le MultiTool en Azurite nécessite une <strong>Machine de renforcement</strong> pour être crafté (voir la section « Les Machines »). L'Azurite permet également de crafter le <strong>Super-Chargeur</strong> (voir section « Bases et pillages »).</div>
+
+          <h4>La Houe Magique</h4>
+          <p>La Houe Magique est une houe qui gagne en niveau en réalisant des actions. Elle évolue ainsi en même temps que votre métier de farmer.</p>
+          <div class="grille-crafts">
+            <div class="carte-craft"><div class="legende">Le craft</div><img src="assets/img/image18.jpeg" alt="Craft de la Houe Magique"></div>
+            <div class="carte-craft"><div class="legende">Les niveaux</div><img src="assets/img/image19.jpeg" alt="Niveaux de la Houe Magique"></div>
+          </div>
+          <p>Barème d'expérience gagnée selon la culture récoltée :</p>
+          <div class="zone-tableau">
+            <table class="tableau-stylise">
+              <thead><tr><th>Culture</th><th>Expérience</th></tr></thead>
+              <tbody>
+                <tr><td>Blé</td><td>1.5 Exp</td></tr>
+                <tr><td>Patates</td><td>2 Exp</td></tr>
+                <tr><td>Carottes</td><td>2 Exp</td></tr>
+                <tr><td>Café</td><td>5 Exp</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Évolution de la houe par niveau :</p>
+          <div class="zone-tableau">
+            <table class="tableau-stylise">
+              <thead><tr><th>Niveau</th><th>Effet</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Houe vanilla sans propriété</td></tr>
+                <tr><td>2</td><td>Possibilité de replanter les graines en clic droit sur un bloc</td></tr>
+                <tr><td>3</td><td>Multiplie les objets obtenus par 1.25</td></tr>
+                <tr><td>4</td><td>Casse les cultures en 3x3 blocs</td></tr>
+                <tr><td>5</td><td>Plante les cultures en 3x3 blocs</td></tr>
+                <tr><td>6</td><td>Multiplie les objets obtenus par 1.5</td></tr>
+                <tr><td>7</td><td>Casse les cultures en 6x6 blocs</td></tr>
+                <tr><td>8</td><td>Plante les cultures en 6x6 blocs</td></tr>
+                <tr><td>9</td><td>Multiplie les objets obtenus par 1.75</td></tr>
+                <tr><td>10</td><td>Multiplie les objets obtenus par 2</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Les outils en Malachite</h4>
+          <p>Le Malachite permet lui aussi d'obtenir deux outils très utiles :</p>
+          <div class="zone-tableau">
+            <table class="tableau-stylise">
+              <thead><tr><th>Outil</th><th>Craft</th><th>Effet</th></tr></thead>
+              <tbody>
+                <tr><td>Marteau en Malachite</td><td>Se craft comme une pioche classique</td><td>Permet de casser les blocs rapidement en 3x3</td></tr>
+                <tr><td>Cisaille en Malachite</td><td>Se craft comme des cisailles classiques</td><td>Permet de récupérer des spawners (durabilité de 5)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="pvp">
+          <h3>Le PVP</h3>
+          <p>LiberCraft apporte également un gameplay PVP custom ! L'objectif : créer un PVP plutôt orienté drop.</p>
+          <div class="grille-crafts">
+            <div class="carte-craft"><div class="legende">Le Café</div><img src="assets/img/image22.jpeg" alt="Craft du café"></div>
+            <div class="carte-craft"><div class="legende">La Boisson énergisante</div><img src="assets/img/image23.png" alt="Craft de la boisson énergisante"></div>
+          </div>
+          <div class="zone-tableau">
+            <table class="tableau-stylise">
+              <thead><tr><th>Consommable</th><th>Effets</th><th>Cooldown</th></tr></thead>
+              <tbody>
+                <tr><td>Café</td><td>Force II (6 min) · Vitesse II (6 min) · Résistance au feu (6 min)</td><td>4 minutes</td></tr>
+                <tr><td>Boisson énergisante</td><td>Force II (8 min) · Vitesse II (8 min) · Résistance au feu (8 min) · Régénération (10 s)</td><td>8 minutes</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="encart-info">Les potions sont stackables par deux.</div>
+          <p>Les armures faites pour le PVP sont les suivantes :</p>
+          <div class="zone-tableau">
+            <table class="tableau-stylise">
+              <thead><tr><th>Nom</th><th>Type de craft</th></tr></thead>
+              <tbody>
+                <tr><td>L'Azurite</td><td>Vanilla</td></tr>
+                <tr><td>L'Azurite renforcé</td><td>Nécessite une machine de renforcement</td></tr>
+                <tr><td>Le Malachite</td><td>Vanilla</td></tr>
+                <tr><td>Le Liberium</td><td>Vanilla</td></tr>
+                <tr><td>Le Liberium renforcé</td><td>Nécessite une machine de renforcement</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="bases">
+          <h3>Les bases et les pillages</h3>
+          <p>Sur LiberCraft, il y a de nombreuses fonctionnalités pour créer une base ainsi que pour les pillages. Il existe de nombreux coffres moddés :</p>
+          <img class="illustration-large" src="assets/img/image30.jpeg" alt="Coffres moddés">
+          <p>De plus, le système de claim de base a été retravaillé :</p>
+          <div class="zone-tableau">
+            <table class="tableau-stylise">
+              <thead><tr><th>Bloc</th><th>Résistance</th></tr></thead>
+              <tbody>
+                <tr><td>L'obsidienne</td><td>Résiste à 4 explosions</td></tr>
+                <tr><td>L'Azurite Obsidienne</td><td>Résiste à 4 explosions de creeper superchargé</td></tr>
+                <tr><td>Slab en Azurite Obsidienne</td><td>—</td></tr>
+                <tr><td>Trap en Azurite Obsidienne</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="encart-info">Pour supercharger un creeper, il vous faut impérativement un <strong>« Superchargeur »</strong>, craftable à partir d'Azurite.</div>
+          <p>Pour chercher des bases, vous pouvez utiliser ces techniques autorisées par le règlement :</p>
+          <div class="zone-tableau">
+            <table class="tableau-stylise">
+              <thead><tr><th>Technique</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>Le radar à base</td><td>Vous permet de voir le % de chance qu'une base soit présente dans un rayon de 3x3 chunks</td></tr>
+                <tr><td>Le Show-FPS</td><td>Échap → Options vidéo → Détails → Voir les FPS</td></tr>
+                <tr><td>Le Debug Profile</td><td>Échap → Options vidéo → Détails → Debug Profile « ON »</td></tr>
+                <tr><td>« Bug » redstone</td><td>Bug redstone avec des barrières autorisé</td></tr>
+                <tr><td>« Bug » F5</td><td>Se mettre en F5 pour voir à travers les blocs, autorisé</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p><em>Des tutos pour l'usage de toutes ces techniques sortiront sur les réseaux de LiberCraft !</em></p>
+        </section>
+
+        <section id="machines">
+          <h3>Les Machines</h3>
+          <p>LiberCraft compte pour le moment 2 machines qui vous permettent de crafter un meilleur équipement :</p>
+
+          <h4>La Machine de renforcement</h4>
+          <p>La Machine de renforcement permet de renforcer votre armure en <strong>Azurite</strong> et en <strong>Liberium</strong>.</p>
+          <div class="grille-crafts">
+            <div class="carte-craft"><div class="legende">La Machine</div><img src="assets/img/image36.jpeg" alt="Craft de la Machine de renforcement"></div>
+            <div class="carte-craft"><div class="legende">Plaque en Azurite</div><img src="assets/img/image37.jpeg" alt="Craft plaque en Azurite"></div>
+            <div class="carte-craft"><div class="legende">Plaque en Liberium</div><img src="assets/img/image38.jpeg" alt="Craft plaque en Liberium"></div>
+            <div class="carte-craft"><div class="legende">Schéma de renforcement</div><img src="assets/img/image17.png" alt="Schéma pour améliorer un objet"></div>
+          </div>
+
+          <h4>La Forge</h4>
+          <p>La Forge permet de fabriquer l'armure runique. Cette armure permet d'améliorer votre expérience de farm en vous donnant des avantages.</p>
+          <div class="grille-crafts">
+            <div class="carte-craft"><div class="legende">La Forge</div><img src="assets/img/image39.jpeg" alt="Craft de la Forge"></div>
+            <div class="carte-craft"><div class="legende">L'armure template (avec du Lithium)</div><img src="assets/img/image40.jpeg" alt="Craft de l'armure template"></div>
+            <div class="carte-craft"><div class="legende">La Fusion</div><img src="assets/img/image41.png" alt="Craft de fusion"></div>
+          </div>
+          <div class="encart-info">La fusion peut échouer. Dans ce cas, vous obtiendrez une pièce d'armure cassée.</div>
+          <p>Propriétés de l'armure runique :</p>
+          <div class="grille-objets">
+            <div class="carte-objet"><img src="assets/img/image42.png" alt="Radar à base"><div class="infos"><h4>Radar à base</h4><p>Affiche la probabilité de trouver une base dans un rayon de 3x3 chunks. Obtenu en tuant des Zombies (0,05% de chance).</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image43.png" alt="Plastron magnétique"><div class="infos"><h4>Plastron magnétique</h4><p>Permet de marcher sur l'eau. Rune d'aimant obtenue en pêchant (0.76% de chance).</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image44.png" alt="Jambière coupe-faim"><div class="infos"><h4>Jambière coupe-faim</h4><p>Permet de ne plus avoir faim. Obtenue en cassant des nether-wart (0,05% de chance).</p></div></div>
+            <div class="carte-objet"><img src="assets/img/image45.png" alt="Bottes énergiques"><div class="infos"><h4>Bottes énergiques</h4><p>Effet de vitesse 2. Rune d'énergie obtenue en cassant du café (1% de chance).</p></div></div>
+          </div>
+        </section>
+
+        <section id="warps">
+          <h3>Les Warps</h3>
+          <p>Il existe sur LiberCraft plusieurs warps qui vous permettent d'obtenir des ressources :</p>
+
+          <h4>Le /warp HDV</h4>
+          <p>Le warp HDV permet d'échanger des ressources avec un marchand viking. Les trades disponibles avec ce PNJ changeront au cours de la version.</p>
+
+          <h4>Le /warp Samourai</h4>
+          <p>Le warp Samouraï est un warp en <strong>Warzone</strong>. Il permet de combattre des Samouraï et d'obtenir des objets de trade. Ces objets permettent notamment d'obtenir l'armure Japon. Rendez-vous à ce warp avec un stuff correct, étant donné que les mobs sont assez puissants et que des joueurs peuvent venir vous PVP. Toutes les ressources ont 1% de chance d'être obtenues, excepté les « coins » qui ont 50% de chance d'être obtenus.</p>
+          <img class="illustration-large" src="assets/img/image46.jpeg" alt="Samouraï présent au warp">
+          <p>Voici un exemple du black market qui apparaît de manière régulière en warzone pour vous permettre d'échanger vos ressources contre de l'équipement :</p>
+          <img class="illustration-large" src="assets/img/image47.jpeg" alt="Black market en warzone">
+        </section>
+      </section>
+
+      <section id="commandes">
+        <h2>Les commandes &amp; aides</h2>
+
+        <h3>Les bases</h3>
+        <div class="encart-info">
+          Vous pouvez afficher les crafts en appuyant sur <strong>« R »</strong> dans l'inventaire (appuyez sur « O » pour activer/désactiver l'aperçu des objets).<br><br>
+          La map fait <strong>25 000 x 25 000 blocs</strong> ; vous pouvez donc vous éloigner afin de créer votre base.
+        </div>
+        <p>Commandes de téléportation :</p>
+        <div class="zone-tableau">
+          <table class="tableau-stylise">
+            <thead><tr><th>Commande</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>/spawn</code></td><td>Pour être téléporté au spawn du serveur</td></tr>
+              <tr><td><code>/tpa [joueur]</code></td><td>Pour se téléporter à un joueur (<code>/tpaccept</code> pour accepter)</td></tr>
+              <tr><td><code>/rtp</code></td><td>Pour se téléporter aléatoirement sur la carte (entre 1000 et 10 000)</td></tr>
+              <tr><td><code>/menu</code></td><td>Permet d'avoir des informations sur le serveur</td></tr>
+              <tr><td><code>/money</code></td><td>Permet de voir sa monnaie</td></tr>
+              <tr><td><code>/sethome [nom]</code></td><td>Permet d'ajouter un point de téléportation</td></tr>
+              <tr><td><code>/home [nom]</code></td><td>Permet de se téléporter à son point de téléportation</td></tr>
+              <tr><td><code>/delhome [nom]</code></td><td>Permet de supprimer un point de téléportation</td></tr>
+              <tr><td><code>/ah</code> ou <code>/hdv</code></td><td>Affiche l'hôtel des ventes (<code>/ah sell [PRIX]</code> pour vendre l'objet en main)</td></tr>
+              <tr><td><code>/shop</code></td><td>Permet de vendre vos objets et d'acheter à un prix défini à l'avance</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Les commandes factions</h3>
+        <div class="zone-tableau">
+          <table class="tableau-stylise">
+            <thead><tr><th>Commande</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>/f create [nom]</code></td><td>Permet de créer une faction</td></tr>
+              <tr><td><code>/f invite add [pseudo]</code></td><td>Permet d'inviter quelqu'un dans sa faction</td></tr>
+              <tr><td><code>/f join [faction]</code></td><td>Permet de rejoindre une faction</td></tr>
+              <tr><td><code>/f leave</code></td><td>Permet de quitter sa faction</td></tr>
+              <tr><td><code>/f disband</code></td><td>Permet de supprimer sa faction</td></tr>
+              <tr><td><code>/f f [faction/joueur]</code></td><td>Permet d'avoir des informations sur une faction ou un joueur</td></tr>
+              <tr><td><code>/f map (auto)</code></td><td>Affiche les claims autour de soi (« auto » actualise à chaque changement de chunk)</td></tr>
+              <tr><td><code>/f ennemy [faction]</code></td><td>Ajoute une faction à sa liste d'ennemis — nécessaire pour pouvoir frapper un joueur dans ses claims, mais empêche l'usage de commandes (/sethome…) dans les claims ennemies</td></tr>
+              <tr><td><code>/f claim</code></td><td>Permet de claim un chunk et de le protéger (seules les explosions font des dégâts au chunk)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tokens">
+        <h2>Les Tokens, grades, capes et kits</h2>
+
+        <h3>Le principe des tokens</h3>
+        <p>Les tokens sont la seconde monnaie du serveur : ils permettent d'acquérir des grades, des kits ainsi que des capes. Les tokens n'ont pas été reset depuis la V1 en janvier 2024.</p>
+        <p>Les tokens s'obtiennent en réalisant des missions qui aident le serveur (et non avec de l'argent IRL) :</p>
+        <div class="zone-tableau">
+          <table class="tableau-stylise">
+            <thead><tr><th>Mission</th><th>Récompense</th></tr></thead>
+            <tbody>
+              <tr><td>Voter (lien vers le salon Discord)</td><td>50 tokens par vote (soit 2 600 tokens par jour)</td></tr>
+              <tr><td>Lier votre compte Discord (commande <code>/link</code> en jeu)</td><td>300 tokens + la cape « Tortue »</td></tr>
+              <tr><td>Invitation sur le Discord</td><td>200 tokens par invitation</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Commandes utiles autour des tokens :</p>
+        <div class="zone-tableau">
+          <table class="tableau-stylise">
+            <thead><tr><th>Commande</th><th>Utilité</th></tr></thead>
+            <tbody>
+              <tr><td><code>/menu</code></td><td>Permet de voir vos tokens</td></tr>
+              <tr><td><code>/token send [pseudo]</code></td><td>Permet d'envoyer vos tokens à un autre joueur</td></tr>
+              <tr><td><code>/boutique</code></td><td>Permet d'échanger vos tokens contre des grades, kits, capes et sacs de récompenses</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Les grades</h3>
+        <div class="grille-grades">
+          <div class="carte-grade">
+            <h4>Joueur</h4>
+            <ul><li>Pseudo en blanc</li><li>3 /home</li><li>9 slots à l'HDV</li><li>Kit Joueur + Kit Nourriture</li></ul>
+            <div class="prix"></div>
+          </div>
+          <div class="carte-grade">
+            <h4>Chevalier</h4>
+            <ul><li>Pseudo en vert</li><li>4 /home</li><li>11 slots à l'HDV</li><li>/craft</li><li>Kit Chevalier</li></ul>
+            <div class="prix">Prix : <b>500</b> tokens</div>
+          </div>
+          <div class="carte-grade">
+            <h4>Comte</h4>
+            <ul><li>Pseudo en bleu</li><li>6 /home</li><li>14 slots à l'HDV</li><li>/feed</li><li>Kit Comte</li></ul>
+            <div class="prix">Prix : <b>1 300</b> tokens (cumulé 1 800)</div>
+          </div>
+          <div class="carte-grade">
+            <h4>Seigneur</h4>
+            <ul><li>Pseudo en jaune</li><li>7 /home</li><li>17 slots à l'HDV</li><li>/near · /repair</li><li>Kit Seigneur</li></ul>
+            <div class="prix">Prix : <b>2 000</b> tokens (cumulé 3 800)</div>
+          </div>
+          <div class="carte-grade">
+            <h4>Empereur</h4>
+            <ul><li>Pseudo en or</li><li>9 /home</li><li>20 slots à l'HDV</li><li>/back · /ec</li><li>Kit Empereur</li></ul>
+            <div class="prix">Prix : <b>3 500</b> tokens (cumulé 7 300)</div>
+          </div>
+          <div class="carte-grade">
+            <h4>Divin</h4>
+            <ul><li>Pseudo en cyan</li><li>12 /home</li><li>24 slots à l'HDV</li><li>/hat</li><li>Kit Divin</li></ul>
+            <div class="prix">Prix : <b>4 900</b> tokens tokens (cumulé 12 200)</div>
+          </div>
+        </div>
+        <div class="encart-info">Des capes sont débloquées à chaque rank-up (voir section « Les capes » ci-dessous).</div>
+
+        <p>Détail des kits par grade :</p>
+        <div class="grille-kits">
+          <div class="carte-kit"><div class="entete-kit"><h4>Kit Joueur</h4></div><ul><li>Armure en diamant (P2 U3)</li><li>Steak (x128)</li><li>Pioche en diamant (Effi 2, U3)</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Kit Nourriture</h4></div><ul><li>Steak (x128)</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Kit Chevalier</h4></div><ul><li>Casque en diamant (P2 U3)</li><li>Plastron en diamant (P3 U3)</li><li>Jambière en diamant (P3 U3)</li><li>Bottes en diamant (P2 U3)</li><li>Épée en diamant (Sharp 5 U3)</li><li>Café (x1)</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Kit Comte</h4></div><ul><li>Casque en Azurite (P1 U3)</li><li>Plastron en diamant (P4 U3)</li><li>Jambière en diamant (P4 U3)</li><li>Bottes en diamant (P4 U3)</li><li>Épée en Azurite (Sharp 1 U3)</li><li>Café (x1)</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Kit Seigneur</h4></div><ul><li>Armure en Azurite (P2 U3)</li><li>Épée en Azurite (Sharp 2 U3)</li><li>Café (x1)</li><li>Boisson énergisante (x1)</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Kit Empereur</h4></div><ul><li>Armure en Azurite (P3 U3)</li><li>Épée en Azurite (Sharp 3 U3)</li><li>Pomme en or (x2)</li><li>Café (x1)</li><li>Boisson énergisante (x1)</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Kit Divin</h4></div><ul><li>Armure en Azurite (P4 U3)</li><li>Épée en Azurite (Sharp 5 U3)</li><li>Pomme en or (x8)</li><li>Boisson énergisante (x2)</li><li>Café (x4)</li></ul></div>
+        </div>
+
+        <h3>Les Kits (boutique de tokens)</h3>
+        <div class="grille-kits">
+          <div class="carte-kit"><div class="entete-kit"><h4>Chimiste</h4><span class="prix-kit">250 tokens</span></div><ul><li>22 potions de Heal II</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Constructeur</h4><span class="prix-kit">275 tokens</span></div><ul><li>Obsidienne (x576)</li><li>Coffre en fer (x2)</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Enchanteur</h4><span class="prix-kit">350 tokens</span></div><ul><li>Bouteille d'expérience (x64)</li><li>Livre (x16)</li><li>Livre Sharpness III</li><li>Livre Unbreaking III</li><li>Livre Protection II</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Pilleur</h4><span class="prix-kit">400 tokens</span></div><ul><li>Briquet</li><li>TNT (x16)</li><li>Œufs de creeper (x3)</li><li>Eau (x2)</li><li>Bouton (x2)</li><li>Trap (x2)</li><li>Levier (x2)</li></ul></div>
+          <div class="carte-kit"><div class="entete-kit"><h4>Mineur</h4><span class="prix-kit">350 tokens</span></div><ul><li>Charbon (x64)</li><li>Redstone (x64)</li><li>Lingots de fer (x32)</li><li>Lingots d'or (x16)</li><li>Diamant (x16)</li><li>Azurite (x8)</li><li>Minerais aléatoires (x8)</li></ul></div>
+        </div>
+
+        <h3>Les capes</h3>
+        <p>LiberCraft possède un système de capes complet. Vous pouvez obtenir des capes de plusieurs manières :</p>
+        <div class="encart-info">
+          ▸ Avec les grades (chaque grade possède des capes uniques)<br>
+          ▸ Avec les tokens (une boutique de capes existe)<br>
+          ▸ Capes spéciales (en participant à des évènements)<br>
+          ▸ Capes <strong>Partenaires</strong> (seule chose vendue sur le serveur contre de l'argent IRL)
+        </div>
+
+        <div class="groupe-capes-titre">Capes de grade — Comte</div>
+        <div class="grille-capes">
+          <div class="carte-cape"><img src="assets/img/image50.png" alt="Cape 15th anniversaire"><div class="nom">15th anniversaire</div></div>
+          <div class="carte-cape"><img src="assets/img/image51.png" alt="Cape Commune"><div class="nom">Commune</div></div>
+          <div class="carte-cape"><img src="assets/img/image52.png" alt="Cape Vanilla"><div class="nom">Vanilla</div></div>
+        </div>
+        <div class="groupe-capes-titre">Capes de grade — Seigneur</div>
+        <div class="grille-capes">
+          <div class="carte-cape"><img src="assets/img/image53.png" alt="Cape Cherry"><div class="nom">Cherry</div></div>
+        </div>
+        <div class="groupe-capes-titre">Capes de grade — Empereur</div>
+        <div class="grille-capes">
+          <div class="carte-cape"><img src="assets/img/image54.png" alt="Cape Home"><div class="nom">Home</div></div>
+          <div class="carte-cape"><img src="assets/img/image55.png" alt="Cape Menace"><div class="nom">Menace</div></div>
+          <div class="carte-cape"><img src="assets/img/image56.png" alt="Cape Yearn"><div class="nom">Yearn</div></div>
+        </div>
+        <div class="groupe-capes-titre">Capes de grade — Divin</div>
+        <div class="grille-capes">
+          <div class="carte-cape"><img src="assets/img/image57.png" alt="Cape 2011"><div class="nom">2011</div></div>
+          <div class="carte-cape"><img src="assets/img/image58.png" alt="Cape 2012"><div class="nom">2012</div></div>
+          <div class="carte-cape"><img src="assets/img/image59.png" alt="Cape 2013"><div class="nom">2013</div></div>
+          <div class="carte-cape"><img src="assets/img/image60.png" alt="Cape 2015"><div class="nom">2015</div></div>
+          <div class="carte-cape"><img src="assets/img/image61.png" alt="Cape 2016"><div class="nom">2016</div></div>
+        </div>
+
+        <div class="groupe-capes-titre">Capes des Tokens</div>
+        <div class="grille-capes">
+          <div class="carte-cape"><img src="assets/img/image62.png" alt="Cape Builder"><div class="nom">Builder</div><div class="prix">1000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image63.png" alt="Cape Cheapshot"><div class="nom">Cheapshot</div><div class="prix">1000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image63.png" alt="Cape Translator"><div class="nom">Translator</div><div class="prix">1000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image64.png" alt="Cape XBirthday"><div class="nom">XBirthday</div><div class="prix">1000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image64.png" alt="Cape Cobalt"><div class="nom">Cobalt</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image65.png" alt="Cape Zombie"><div class="nom">Zombie</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image66.png" alt="Cape Copper"><div class="nom">Copper</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image67.png" alt="Cape Crafter"><div class="nom">Crafter</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image68.png" alt="Cape DB"><div class="nom">DB</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image69.png" alt="Cape MapMaker"><div class="nom">MapMaker</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image70.png" alt="Cape Prismarine"><div class="nom">Prismarine</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image71.png" alt="Cape Scrolls"><div class="nom">Scrolls</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image72.png" alt="Cape Snowman"><div class="nom">Snowman</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image73.png" alt="Cape Spade"><div class="nom">Spade</div><div class="prix">2000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image74.png" alt="Cape Mojang"><div class="nom">Mojang</div><div class="prix">3000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image75.png" alt="Cape Mojang Classique"><div class="nom">Mojang Classique</div><div class="prix">3000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image76.png" alt="Cape Mojang Studio"><div class="nom">Mojang Studio</div><div class="prix">3000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image77.png" alt="Cape Mojang Office"><div class="nom">Mojang Office</div><div class="prix">3000 tokens</div></div>
+          <div class="carte-cape"><img src="assets/img/image78.png" alt="Cape Moonlight Trail"><div class="nom">Moonlight Trail</div><div class="prix">3000 tokens</div></div>
+        </div>
+
+        <div class="groupe-capes-titre">Capes spéciales</div>
+        <div class="grille-capes">
+          <div class="carte-cape"><img src="assets/img/image79.png" alt="Cape OG"><div class="nom">OG</div><div class="prix">Offerte aux joueurs V1 et V2</div></div>
+          <div class="carte-cape"><img src="assets/img/image80.png" alt="Cape Tortue"><div class="nom">Tortue</div><div class="prix">Lier son compte via /link</div></div>
+        </div>
+
+        <div class="groupe-capes-titre">Capes partenaires</div>
+        <p><em>Trouvable dans la section capes du site !</em></p>
+      </section>
+
+      <a href="#wiki" class="retour-haut">↑ Retour en haut du wiki</a>
+    </article>
+  </div>
+</main>
 
 <footer>
   Premier PVP-Faction 100% Farm2Win

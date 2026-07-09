@@ -204,6 +204,14 @@ h1 .rouge{color:var(--rouge-braise);}
   border-radius:4px;
 }
 
+.bouton-bascule svg{width:18px;height:18px;stroke:var(--or-clair);flex-shrink:0;}
+.bouton-bascule:hover{border-color:var(--rouge-braise);background:rgba(200,16,46,0.1);}
+.bouton-bascule.actif{
+  background:linear-gradient(160deg, rgba(200,16,46,0.18), rgba(28,21,18,0.4));
+  border-color:var(--rouge-braise);
+  color:var(--washi-clair);
+}
+
 .bouton-telechargement{
   position:relative;
   z-index:2;
@@ -272,8 +280,10 @@ footer span{color:var(--rouge-torii);font-weight:600;}
 
 <header>
   <div class="logo-header">
+    <img src="https://i.imgur.com/1DCbtsk.png" alt="Logo" height="40">
   </div>
   <nav>
+    <a href="index.html" class="actif">Accueil</a>
     <a href="votes.html">Votes</a>
     <a href="capes.html">Capes</a>
     <a href="wiki.html">Wiki</a>
@@ -296,7 +306,7 @@ footer span{color:var(--rouge-torii);font-weight:600;}
   <h1><span class="rouge">LiberCraft</span></h1>
   <div class="trait"></div>
 
-  <p class="presentation" contenteditable="true">
+  <p class="presentation" contenteditable="false">
     LiberCraft est un pvp-faction moddé sans aucune boutique avec de l'argent IRL. Notre objectif est de créer une expérience de jeu égale pour tous les joueurs !
   </p>
 
