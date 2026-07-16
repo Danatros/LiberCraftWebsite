@@ -15,8 +15,8 @@
   --encre-clair:#241a16;
   --washi:#7d7272;
   --washi-clair:#faf5ea;
-  --or:#d02316;
-  --or-clair:#d02316;
+  --or:#c9a35a;
+  --or-clair:#e3c583;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -34,9 +34,30 @@ body{
   z-index:0;
   opacity:0.05;
   pointer-events:none;
-  background-image:
-    radial-gradient(circle at 20px 20px, var(--or) 2px, transparent 2px);
-  background-size:40px 40px;
+  background-image:radial-gradient(circle at 1px 1px, var(--or-clair) 1px, transparent 1px);
+  background-size:34px 34px;
+}
+.fond-vignette{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+}
+.fond-lueur{
+  position:fixed;
+  inset:-10%;
+  z-index:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 30% 20%, rgba(200,16,46,0.10), transparent 35%);
+  animation:derive-lueur 22s ease-in-out infinite alternate;
+}
+@keyframes derive-lueur{
+  0%{background-position:0% 0%;}
+  100%{background-position:20% 12%;}
+}
+@media (prefers-reduced-motion: reduce){
+  .fond-lueur{animation:none !important;}
 }
 
 header{
@@ -259,6 +280,7 @@ h1 .rouge{color:var(--rouge-braise);}
   transition:all 0.2s ease;
 }
 .sommaire a:hover{color:var(--washi-clair);border-left-color:rgba(224,67,47,0.5);}
+.sommaire a.actif{color:var(--washi-clair);border-left-color:var(--rouge-braise);background:rgba(200,16,46,0.08);}
 .sommaire .niv2 a{padding-left:22px;font-size:12.5px;color:#a89b86;}
 .sommaire .niv1-titre{
   padding:7px 10px;
@@ -550,6 +572,22 @@ footer{
   z-index:1;
   margin-top:100px;
 }
+.footer-liens{
+  display:flex;
+  justify-content:center;
+  gap:24px;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+.footer-liens a{
+  color:var(--encre);
+  text-decoration:none;
+  font-size:12px;
+  letter-spacing:0.06em;
+  opacity:0.75;
+  transition:opacity 0.25s ease;
+}
+.footer-liens a:hover{opacity:1;text-decoration:underline;}
 
 @media (max-width:980px){
   .mise-en-page-wiki{grid-template-columns:1fr;}
@@ -576,6 +614,8 @@ footer{
 <body>
 
 <div class="fond-motif"></div>
+<div class="fond-vignette"></div>
+<div class="fond-lueur"></div>
 
 <header>
   <div class="logo-header">
@@ -583,7 +623,7 @@ footer{
   </div>
   <nav>
     <a href="index.html">Accueil</a>
-    <a href="vote.html">Votes</a>
+    <a href="votes.html">Votes</a>
     <a href="capes.html">Capes</a>
     <a href="wiki.html" class="actif">Wiki</a>
   </nav>
@@ -1090,7 +1130,35 @@ footer{
 
 <footer>
   Premier PVP-Faction 100% Farm2Win
+  <div class="footer-liens">
+    <a href="index.html">Accueil</a>
+    <a href="votes.html">Votes</a>
+    <a href="capes.html">Capes</a>
+    <a href="wiki.html">Wiki</a>
+  </div>
 </footer>
+
+<script>
+const liensSommaire = document.querySelectorAll('.sommaire a[href^="#"]');
+const sectionsWiki = [...liensSommaire]
+  .map(lien => document.querySelector(lien.getAttribute('href')))
+  .filter(Boolean);
+
+if(sectionsWiki.length){
+  const observateurSommaire = new IntersectionObserver((entrees) => {
+    entrees.forEach(entree => {
+      const lien = document.querySelector(`.sommaire a[href="#${entree.target.id}"]`);
+      if(!lien) return;
+      if(entree.isIntersecting){
+        liensSommaire.forEach(l => l.classList.remove('actif'));
+        lien.classList.add('actif');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+
+  sectionsWiki.forEach(section => observateurSommaire.observe(section));
+}
+</script>
 
 </body>
 </html>

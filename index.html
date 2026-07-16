@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LiberCraft</title>
+<title>LiberCraft — Accueil</title>
+<meta name="description" content="LiberCraft, le premier PVP-Faction 100% Farm2Win : aucune boutique avec de l'argent réel, une expérience de jeu égale pour tous.">
+<meta name="theme-color" content="#1c1512">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LiberCraft — PVP-Faction 100% Farm2Win">
+<meta property="og:description" content="Un serveur Minecraft moddé sans Pay2Win, dans un univers Edo x Vikings. Télécharge le launcher et rejoins l'aventure.">
+<meta property="og:image" content="https://i.imgur.com/1DCbtsk.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -14,13 +22,18 @@
   --encre:#1c1512;
   --washi:#7d7272;
   --washi-clair:#faf5ea;
-  --or:#d02316;
-  --or-clair:#d02316;
+  --or:#c9a35a;
+  --or-clair:#e3c583;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
-  background:var(--encre);
+  background:
+    radial-gradient(circle at 18% -8%, rgba(200,16,46,0.22), transparent 42%),
+    radial-gradient(circle at 88% 8%, rgba(224,67,47,0.14), transparent 38%),
+    radial-gradient(circle at 50% 115%, rgba(122,18,32,0.4), transparent 55%),
+    linear-gradient(180deg, #1c1512 0%, #170f0d 55%, #110b09 100%);
+  background-attachment:fixed;
   color:var(--washi-clair);
   font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
   overflow-x:hidden;
@@ -33,9 +46,27 @@ body{
   z-index:0;
   opacity:0.05;
   pointer-events:none;
-  background-image:
-    radial-gradient(circle at 20px 20px, var(--or) 2px, transparent 2px);
-  background-size:40px 40px;
+  background-image:radial-gradient(circle at 1px 1px, var(--or-clair) 1px, transparent 1px);
+  background-size:34px 34px;
+}
+.fond-vignette{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+}
+.fond-lueur{
+  position:fixed;
+  inset:-10%;
+  z-index:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 30% 20%, rgba(200,16,46,0.10), transparent 35%);
+  animation:derive-lueur 22s ease-in-out infinite alternate;
+}
+@keyframes derive-lueur{
+  0%{background-position:0% 0%;}
+  100%{background-position:20% 12%;}
 }
 
 header{
@@ -108,6 +139,8 @@ nav a::after{
 }
 nav a:hover{color:var(--or-clair);}
 nav a:hover::after{width:100%;}
+nav a.actif{color:var(--rouge-braise);}
+nav a.actif::after{width:100%;}
 
 .hero{
   position:relative;
@@ -130,6 +163,76 @@ nav a:hover::after{width:100%;}
   opacity:0.16;
   z-index:0;
   pointer-events:none;
+  will-change:transform;
+}
+
+.braises{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:1;
+}
+.braise{
+  position:absolute;
+  bottom:-20px;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--rouge-braise);
+  box-shadow:0 0 8px 2px rgba(224,67,47,0.7);
+  opacity:0;
+  animation-name:monter-braise;
+  animation-timing-function:ease-in;
+  animation-iteration-count:infinite;
+}
+@keyframes monter-braise{
+  0%{transform:translateY(0) translateX(0);opacity:0;}
+  10%{opacity:0.9;}
+  90%{opacity:0.5;}
+  100%{transform:translateY(-100vh) translateX(var(--derive, 40px));opacity:0;}
+}
+
+.aura-emblem{
+  position:absolute;
+  inset:-14px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(200,16,46,0.35), transparent 70%);
+  animation:pulser-aura 3.5s ease-in-out infinite;
+  z-index:-1;
+}
+@keyframes pulser-aura{
+  0%, 100%{transform:scale(0.95);opacity:0.6;}
+  50%{transform:scale(1.15);opacity:1;}
+}
+
+.indicateur-scroll{
+  position:relative;
+  z-index:2;
+  margin-top:44px;
+  width:38px;
+  height:38px;
+  border:1px solid rgba(224,67,47,0.4);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--or-clair);
+  text-decoration:none;
+  animation:rebondir-scroll 2s ease-in-out infinite;
+  transition:border-color 0.25s ease, background 0.25s ease;
+}
+.indicateur-scroll:hover{border-color:var(--rouge-braise);background:rgba(200,16,46,0.12);}
+.indicateur-scroll svg{width:16px;height:16px;}
+@keyframes rebondir-scroll{
+  0%, 100%{transform:translateY(0);}
+  50%{transform:translateY(8px);}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .braise,.aura-emblem,.indicateur-scroll,.fond-lueur{animation:none !important;}
+  .reveal{transition:opacity 0.4s ease !important;transform:none !important;}
+  *{scroll-behavior:auto !important;}
 }
 
 .emblem{
@@ -150,6 +253,7 @@ nav a:hover::after{width:100%;}
   height:112px;
   object-fit:contain;
   border-radius:50%;
+  transition:transform 0.2s ease-out;
 }
 .emblem .placeholder{
   font-family:'Shippori Mincho',serif;
@@ -229,16 +333,291 @@ h1 .rouge{color:var(--rouge-braise);}
   text-decoration:none;
   border:1px solid var(--rouge-braise);
   box-shadow:0 8px 30px rgba(200,16,46,0.35);
+  overflow:hidden;
   transition:transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
+.bouton-telechargement::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:-60%;
+  width:40%;
+  height:100%;
+  background:linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform:skewX(-20deg);
+  transition:left 0.6s ease;
+}
+.bouton-telechargement:hover::before{left:130%;}
 .bouton-telechargement:hover{
   background:var(--rouge-braise);
-  transform:translateY(-3px);
+  transform:translateY(-3px) scale(1.02);
   box-shadow:0 12px 40px rgba(224,67,47,0.5);
+}
+.bouton-telechargement:hover svg{
+  animation:rebondir-icone 0.6s ease;
+}
+@keyframes rebondir-icone{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(3px);}
 }
 .bouton-telechargement svg{
   width:18px;
   height:18px;
+  position:relative;
+  z-index:1;
+}
+.bouton-telechargement span{
+  position:relative;
+  z-index:1;
+}
+
+.lien-secondaire{
+  position:relative;
+  z-index:2;
+  margin-top:22px;
+  color:#a89b86;
+  font-size:13.5px;
+  letter-spacing:0.03em;
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:color 0.25s ease, border-color 0.25s ease;
+}
+.lien-secondaire:hover{
+  color:var(--or-clair);
+  border-bottom-color:rgba(208,35,22,0.5);
+}
+
+/* ===== Accessibilité clavier ===== */
+a:focus-visible,
+button:focus-visible{
+  outline:2px solid var(--or-clair);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+/* ===== Animations au scroll ===== */
+.reveal{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ===== Section Atouts ===== */
+.section-atouts{
+  position:relative;
+  z-index:1;
+  padding:40px 24px 120px;
+  max-width:1180px;
+  margin:0 auto;
+}
+.entete-section{
+  text-align:center;
+  margin-bottom:52px;
+}
+.entete-section h2{
+  font-family:'Shippori Mincho',serif;
+  font-weight:800;
+  font-size:clamp(26px, 4vw, 38px);
+  color:var(--washi-clair);
+}
+.entete-section h2 .rouge{color:var(--rouge-braise);}
+
+.grille-atouts{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:24px;
+}
+.carte-atout{
+  background:linear-gradient(160deg, rgba(200,16,46,0.07), rgba(28,21,18,0.4));
+  border:1px solid rgba(208,35,22,0.25);
+  border-radius:8px;
+  padding:30px 26px;
+  transition:border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.carte-atout:hover{
+  border-color:rgba(224,67,47,0.5);
+  transform:translateY(-6px);
+  box-shadow:0 16px 34px rgba(0,0,0,0.35);
+}
+.icone-atout{
+  width:46px;
+  height:46px;
+  border:1px solid rgba(224,67,47,0.4);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:18px;
+  color:var(--or-clair);
+  transition:background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+.carte-atout:hover .icone-atout{
+  background:var(--rouge-torii);
+  color:var(--washi-clair);
+  transform:rotate(-6deg) scale(1.08);
+}
+.icone-atout svg{width:22px;height:22px;}
+.carte-atout h3{
+  font-family:'Shippori Mincho',serif;
+  font-size:17px;
+  color:var(--washi-clair);
+  margin-bottom:10px;
+}
+.carte-atout p{
+  font-size:13.5px;
+  line-height:1.75;
+  color:#cfc4b1;
+}
+
+/* ===== Section Étapes ===== */
+.section-etapes{
+  position:relative;
+  z-index:1;
+  padding:20px 24px 110px;
+  max-width:1180px;
+  margin:0 auto;
+}
+.grille-etapes{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:24px;
+}
+.carte-etape{
+  position:relative;
+  text-align:center;
+  background:linear-gradient(160deg, rgba(201,163,90,0.08), rgba(28,21,18,0.4));
+  border:1px solid rgba(201,163,90,0.25);
+  border-radius:8px;
+  padding:36px 26px 30px;
+  transition:border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.carte-etape:hover{
+  border-color:rgba(227,197,131,0.5);
+  transform:translateY(-6px);
+  box-shadow:0 16px 34px rgba(0,0,0,0.35);
+}
+.numero-etape{
+  width:42px;
+  height:42px;
+  margin:0 auto 20px;
+  border-radius:50%;
+  border:1px solid var(--or);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Shippori Mincho',serif;
+  font-weight:700;
+  color:var(--or-clair);
+  background:radial-gradient(circle, rgba(201,163,90,0.14), transparent 70%);
+}
+.carte-etape h3{
+  font-family:'Shippori Mincho',serif;
+  font-size:17px;
+  color:var(--washi-clair);
+  margin-bottom:10px;
+}
+.carte-etape p{
+  font-size:13.5px;
+  line-height:1.75;
+  color:#cfc4b1;
+}
+.carte-etape code{
+  background:rgba(201,163,90,0.14);
+  color:var(--or-clair);
+  padding:2px 7px;
+  border-radius:3px;
+  font-size:12px;
+}
+
+/* ===== Section Univers ===== */
+.section-univers{
+  position:relative;
+  z-index:1;
+  max-width:1180px;
+  margin:0 auto;
+  padding:20px 24px 120px;
+  display:grid;
+  grid-template-columns:1.05fr 0.95fr;
+  gap:60px;
+  align-items:center;
+}
+.univers-texte p{
+  font-size:14.5px;
+  line-height:1.9;
+  color:#cfc4b1;
+  margin-bottom:16px;
+}
+.univers-cadre{
+  position:relative;
+  aspect-ratio:4/3;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid rgba(201,163,90,0.3);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(200,16,46,0.28), transparent 55%),
+    radial-gradient(circle at 75% 80%, rgba(201,163,90,0.18), transparent 50%),
+    linear-gradient(160deg, #241a16, #140d0b);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.univers-cadre img{
+  width:130px;
+  height:130px;
+  object-fit:contain;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+}
+@media (max-width:860px){
+  .section-univers{grid-template-columns:1fr; text-align:center;}
+  .univers-cadre{order:-1; max-width:280px; margin:0 auto;}
+}
+
+/* ===== CTA finale ===== */
+.section-cta{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  padding:20px 24px 130px;
+  max-width:760px;
+  margin:0 auto;
+}
+.section-cta p{
+  font-size:14.5px;
+  line-height:1.85;
+  color:#cfc4b1;
+  margin:16px auto 34px;
+  max-width:520px;
+}
+.cta-boutons{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.bouton-outline{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:transparent;
+  color:var(--washi-clair);
+  font-family:'Shippori Mincho',serif;
+  font-weight:700;
+  font-size:15px;
+  letter-spacing:0.05em;
+  padding:16px 34px;
+  border-radius:2px;
+  text-decoration:none;
+  border:1px solid rgba(201,163,90,0.4);
+  transition:border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+.bouton-outline:hover{
+  border-color:var(--or-clair);
+  background:rgba(201,163,90,0.1);
+  transform:translateY(-3px);
 }
 
 .vagues{
@@ -265,6 +644,171 @@ footer{
   letter-spacing:0.05em;
 }
 footer span{color:var(--rouge-torii);font-weight:600;}
+.footer-liens{
+  display:flex;
+  justify-content:center;
+  gap:24px;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+.footer-liens a{
+  color:var(--encre);
+  text-decoration:none;
+  font-size:12px;
+  letter-spacing:0.06em;
+  opacity:0.75;
+  transition:opacity 0.25s ease;
+}
+.footer-liens a:hover{opacity:1;text-decoration:underline;}
+
+/* ===== Barre config ===== */
+.barre-config{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:36px;
+  max-width:900px;
+  margin:0 auto 10px;
+  padding:22px 24px;
+}
+.item-config{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color:#cfc4b1;
+  letter-spacing:0.03em;
+}
+.item-config svg{width:18px;height:18px;color:var(--or-clair);flex-shrink:0;}
+
+/* ===== Section Galerie ===== */
+.section-galerie{
+  position:relative;
+  z-index:1;
+  max-width:1180px;
+  margin:0 auto;
+  padding:20px 24px 110px;
+}
+.grille-galerie{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:20px;
+}
+.cadre-galerie{
+  position:relative;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid rgba(201,163,90,0.25);
+  aspect-ratio:16/10;
+}
+.cadre-galerie img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.5s ease;
+}
+.cadre-galerie:hover img{transform:scale(1.06);}
+.cadre-galerie .legende-galerie{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:14px 16px;
+  background:linear-gradient(0deg, rgba(12,8,7,0.88), transparent);
+  font-family:'Shippori Mincho',serif;
+  font-size:14px;
+  color:var(--washi-clair);
+}
+
+/* ===== Section FAQ ===== */
+.section-faq{
+  position:relative;
+  z-index:1;
+  max-width:820px;
+  margin:0 auto;
+  padding:20px 24px 120px;
+}
+.liste-faq{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.item-faq{
+  border:1px solid rgba(201,163,90,0.22);
+  border-radius:8px;
+  background:rgba(250,245,234,0.02);
+  overflow:hidden;
+}
+.question-faq{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px 24px;
+  background:transparent;
+  border:none;
+  color:var(--washi-clair);
+  font-family:'Shippori Mincho',serif;
+  font-size:15px;
+  text-align:left;
+  cursor:pointer;
+}
+.question-faq svg{
+  width:18px;
+  height:18px;
+  color:var(--or-clair);
+  flex-shrink:0;
+  transition:transform 0.3s ease;
+}
+.item-faq.ouvert .question-faq svg{transform:rotate(45deg);}
+.reponse-faq{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.35s ease, padding 0.35s ease;
+  padding:0 24px;
+}
+.reponse-faq p{
+  font-size:13.5px;
+  line-height:1.8;
+  color:#cfc4b1;
+  padding-bottom:20px;
+}
+.item-faq.ouvert .reponse-faq{max-height:220px;}
+
+/* ===== Bande partenaires ===== */
+.bande-partenaires{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  max-width:700px;
+  margin:0 auto;
+  padding:0 24px 100px;
+}
+.lien-partenaire{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  margin-top:20px;
+  padding:16px 32px;
+  border:1px solid rgba(201,163,90,0.3);
+  border-radius:2px;
+  color:var(--washi-clair);
+  text-decoration:none;
+  font-family:'Shippori Mincho',serif;
+  font-size:15px;
+  letter-spacing:0.03em;
+  transition:border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+.lien-partenaire:hover{
+  border-color:var(--or-clair);
+  background:rgba(201,163,90,0.08);
+  transform:translateY(-3px);
+}
+.lien-partenaire svg{width:18px;height:18px;color:var(--or-clair);}
 
 @media (max-width:640px){
   header{padding:16px 20px;}
@@ -277,12 +821,14 @@ footer span{color:var(--rouge-torii);font-weight:600;}
 <body>
 
 <div class="fond-motif"></div>
+<div class="fond-vignette"></div>
+<div class="fond-lueur"></div>
 
 <header>
   <div class="logo-header">
-    <img src="https://i.imgur.com/1DCbtsk.png" alt="Logo" height="40">
+    <a href="index.html" aria-label="Retour à l'accueil"><img src="https://i.imgur.com/1DCbtsk.png" alt="Logo LiberCraft" height="40"></a>
   </div>
-  <nav>
+  <nav aria-label="Navigation principale">
     <a href="index.html" class="actif">Accueil</a>
     <a href="votes.html">Votes</a>
     <a href="capes.html">Capes</a>
@@ -290,38 +836,328 @@ footer span{color:var(--rouge-torii);font-weight:600;}
   </nav>
 </header>
 
-<section class="hero">
-  <svg class="torii" viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+<section class="hero" id="hero">
+  <div class="braises" id="braises"></div>
+
+  <svg class="torii" id="torii" viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--rouge-torii)" stroke-width="10" stroke-linecap="round">
+    <line x1="220" y1="90" x2="220" y2="480"/>
+    <line x1="980" y1="90" x2="980" y2="480"/>
+    <path d="M120 110 L1080 110" stroke-width="26"/>
+    <path d="M100 90 Q600 30 1100 90" stroke-width="14"/>
+    <line x1="260" y1="190" x2="940" y2="190" stroke-width="12"/>
   </svg>
 
-  <div class="eyebrow">Bienvenue sur</div>
+  <div class="eyebrow reveal">Bienvenue sur</div>
 
-  <div class="emblem">
+  <div class="emblem reveal" id="emblem">
+  <div class="aura-emblem"></div>
   <img
     class="logo"
     src="https://i.imgur.com/1DCbtsk.png"
-    alt="Logo">
+    alt="Logo LiberCraft">
 </div>
 
-  <h1><span class="rouge">LiberCraft</span></h1>
-  <div class="trait"></div>
+  <h1 class="reveal"><span class="rouge">LiberCraft</span></h1>
+  <div class="trait reveal"></div>
 
-  <p class="presentation" contenteditable="false">
-    LiberCraft est un pvp-faction moddé sans aucune boutique avec de l'argent IRL. Notre objectif est de créer une expérience de jeu égale pour tous les joueurs !
+  <p class="presentation reveal" contenteditable="false">
+    LiberCraft est un PVP-faction moddé sans aucune boutique avec de l'argent IRL. Notre objectif est de créer une expérience de jeu égale pour tous les joueurs !
   </p>
 
-  <a href="https://github.com/Danatros/LiberCraft-Launcher/releases/download/V1/Libercraft_Setup.exe" class="bouton-telechargement">
+  <a href="https://github.com/Danatros/LiberCraft-Launcher/releases/download/V1/Libercraft_Setup.exe" class="bouton-telechargement reveal">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/>
     </svg>
-    Télécharger le launcher
+    <span>Télécharger le launcher</span>
+  </a>
+
+  <a href="votes.html" class="lien-secondaire reveal">Envie de nous soutenir ? Vote pour LiberCraft →</a>
+
+  <a href="#atouts" class="indicateur-scroll" aria-label="Découvrir la suite">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
   </a>
 </section>
 
+<div class="barre-config reveal">
+  <div class="item-config">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    Minecraft Java Edition
+  </div>
+  <div class="item-config">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
+    Launcher dédié Windows
+  </div>
+  <div class="item-config">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+    Installation en un clic
+  </div>
+</div>
+
+<section class="section-atouts" id="atouts">
+  <div class="entete-section reveal">
+    <div class="eyebrow">Pourquoi nous rejoindre</div>
+    <h2>Un serveur pensé <span class="rouge">pour les joueurs</span></h2>
+  </div>
+  <div class="grille-atouts">
+    <div class="carte-atout reveal">
+      <div class="icone-atout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6.5 7 1-5 5 1.5 7-6.5-3.5-6.5 3.5 1.5-7-5-5 7-1z"/></svg>
+      </div>
+      <h3>0% Pay2Win</h3>
+      <p>Aucun avantage en jeu ne s'achète avec de l'argent réel. Seules les capes, purement esthétiques, sont vendues.</p>
+    </div>
+    <div class="carte-atout reveal">
+      <div class="icone-atout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 6 10 6 14a6 6 0 0012 0c0-4-2-8-6-12z"/></svg>
+      </div>
+      <h3>Univers Edo x Vikings</h3>
+      <p>Un monde japonais période Edo envahi par les Vikings, avec ses évènements et son armure exclusive.</p>
+    </div>
+    <div class="carte-atout reveal">
+      <div class="icone-atout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2l6 6-9 9-6 1 1-6z"/></svg>
+      </div>
+      <h3>PVP-Faction moddé</h3>
+      <p>Minerais, outils et armures inédits, machines de renforcement et de forge : un gameplay entièrement custom.</p>
+    </div>
+    <div class="carte-atout reveal">
+      <div class="icone-atout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Communauté active</h3>
+      <p>Un serveur en développement continu, à l'écoute de vos suggestions, avec de nouveaux contenus réguliers.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="section-etapes" id="etapes">
+  <div class="entete-section reveal">
+    <div class="eyebrow">Comment jouer</div>
+    <h2>Rejoins l'aventure <span class="rouge">en 3 étapes</span></h2>
+  </div>
+  <div class="grille-etapes">
+    <div class="carte-etape reveal">
+      <div class="numero-etape">1</div>
+      <h3>Télécharge le launcher</h3>
+      <p>Récupère le launcher LiberCraft depuis le bouton ci-dessus : il installe et met à jour le jeu automatiquement.</p>
+    </div>
+    <div class="carte-etape reveal">
+      <div class="numero-etape">2</div>
+      <h3>Lance et connecte-toi</h3>
+      <p>Ouvre le launcher, connecte-toi avec ton compte Minecraft et rejoins le serveur en un clic.</p>
+    </div>
+    <div class="carte-etape reveal">
+      <div class="numero-etape">3</div>
+      <h3>Crée ton mot de passe</h3>
+      <p>À la première connexion, sécurise ton compte avec <code>/register</code>, puis pars à l'aventure.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-univers" id="univers">
+  <div class="univers-texte">
+    <div class="eyebrow reveal">L'univers</div>
+    <h2 class="reveal">Un Japon Edo <span class="rouge">envahi par les Vikings</span></h2>
+    <div class="trait reveal" style="margin:20px 0;"></div>
+    <p class="reveal">Deux mondes qui n'auraient jamais dû se rencontrer s'affrontent sur les terres de LiberCraft : la rigueur et l'artisanat du Japon féodal face à la ferveur guerrière des clans nordiques.</p>
+    <p class="reveal">Cette collision façonne tout ce que tu croises en jeu : minerais inédits, armures forgées à la croisée des deux cultures, événements saisonniers et zones façonnées autour de cette guerre des mondes.</p>
+    <a href="wiki.html" class="lien-secondaire reveal">Explorer le wiki et les mécaniques du serveur →</a>
+  </div>
+  <div class="univers-cadre reveal">
+    <img src="https://i.imgur.com/1DCbtsk.png" alt="Emblème LiberCraft">
+  </div>
+</section>
+
+<section class="section-galerie" id="galerie">
+  <div class="entete-section reveal">
+    <div class="eyebrow">En jeu</div>
+    <h2>Un aperçu <span class="rouge">du monde</span></h2>
+  </div>
+  <div class="grille-galerie">
+    <div class="cadre-galerie reveal">
+      <img src="assets/img/image46.jpeg" alt="Samouraï présent au warp" loading="lazy">
+      <div class="legende-galerie">Un samouraï au warp central</div>
+    </div>
+    <div class="cadre-galerie reveal">
+      <img src="assets/img/image47.jpeg" alt="Black market en warzone" loading="lazy">
+      <div class="legende-galerie">Le black market, en pleine warzone</div>
+    </div>
+    <div class="cadre-galerie reveal">
+      <img src="assets/img/image30.jpeg" alt="Coffres moddés" loading="lazy">
+      <div class="legende-galerie">Coffres moddés et stockage custom</div>
+    </div>
+  </div>
+</section>
+
+<div class="bande-partenaires reveal">
+  <div class="eyebrow">Partenaire</div>
+  <p style="color:#cfc4b1;font-size:13.5px;">LiberCraft s'associe à des créateurs de contenu pour proposer des capes exclusives.</p>
+  <a href="https://www.youtube.com/@InconstanceMC" target="_blank" rel="noopener noreferrer" class="lien-partenaire">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+    Inconstance — chaîne partenaire
+  </a>
+</div>
+
+<section class="section-faq" id="faq">
+  <div class="entete-section reveal">
+    <div class="eyebrow">Questions fréquentes</div>
+    <h2>Tu te <span class="rouge">poses des questions ?</span></h2>
+  </div>
+  <div class="liste-faq">
+    <div class="item-faq reveal">
+      <button class="question-faq" aria-expanded="false">
+        <span>Le serveur est-il vraiment gratuit ?</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <div class="reponse-faq">
+        <p>Oui. LiberCraft est 100% Farm2Win : aucun avantage en jeu ne s'achète avec de l'argent réel. Seules les capes, purement cosmétiques, sont vendues.</p>
+      </div>
+    </div>
+    <div class="item-faq reveal">
+      <button class="question-faq" aria-expanded="false">
+        <span>Comment j'installe le launcher ?</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <div class="reponse-faq">
+        <p>Télécharge le launcher via le bouton en haut de page, installe-le comme n'importe quel programme Windows, puis connecte-toi avec ton compte Minecraft.</p>
+      </div>
+    </div>
+    <div class="item-faq reveal">
+      <button class="question-faq" aria-expanded="false">
+        <span>Comment obtenir des capes gratuitement ?</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <div class="reponse-faq">
+        <p>En votant sur nos 4 sites partenaires. Chaque vote rapporte des tokens, échangeables contre des capes, grades ou kits dans la boutique.</p>
+      </div>
+    </div>
+    <div class="item-faq reveal">
+      <button class="question-faq" aria-expanded="false">
+        <span>Le serveur est-il moddé ou vanilla ?</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <div class="reponse-faq">
+        <p>LiberCraft est un PVP-Faction moddé : minerais, outils et armures inédits, machines de renforcement et de forge viennent enrichir le gameplay vanilla.</p>
+      </div>
+    </div>
+    <div class="item-faq reveal">
+      <button class="question-faq" aria-expanded="false">
+        <span>Où trouver toutes les mécaniques du serveur ?</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <div class="reponse-faq">
+        <p>Le wiki détaille tous les minerais, crafts, grades, kits et capes disponibles sur le serveur, avec captures d'écran à l'appui.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-cta">
+  <div class="entete-section reveal">
+    <div class="eyebrow">Prêt·e à te lancer ?</div>
+    <h2>Ton aventure <span class="rouge">commence maintenant</span></h2>
+  </div>
+  <p class="reveal">Aucune boutique Pay2Win, une communauté active et un univers qui grandit chaque semaine : il ne manque plus que toi.</p>
+  <div class="cta-boutons reveal">
+    <a href="https://github.com/Danatros/LiberCraft-Launcher/releases/download/V1/Libercraft_Setup.exe" class="bouton-telechargement">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/>
+      </svg>
+      <span>Télécharger le launcher</span>
+    </a>
+    <a href="votes.html" class="bouton-outline">Voter pour le serveur</a>
+  </div>
+</section>
+
+<div class="vagues">
+  <svg viewBox="0 0 1200 90" preserveAspectRatio="none">
+    <path d="M0,45 C150,10 350,80 600,45 C850,10 1050,80 1200,45 L1200,90 L0,90 Z" fill="#1c1512"/>
+  </svg>
+</div>
 
 <footer>
   Premier PVP-Faction 100% Farm2Win <span></span>
+  <div class="footer-liens">
+    <a href="index.html">Accueil</a>
+    <a href="votes.html">Votes</a>
+    <a href="capes.html">Capes</a>
+    <a href="wiki.html">Wiki</a>
+  </div>
 </footer>
+
+<script>
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 6) * 0.08 + 's';
+});
+const observateur = new IntersectionObserver((entrees) => {
+  entrees.forEach(entree => {
+    if(entree.isIntersecting){
+      entree.target.classList.add('visible');
+      observateur.unobserve(entree.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observateur.observe(el));
+
+const reduireMouvement = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if(!reduireMouvement){
+  const conteneurBraises = document.getElementById('braises');
+  if(conteneurBraises){
+    const nombreBraises = window.innerWidth < 700 ? 12 : 24;
+    for(let i = 0; i < nombreBraises; i++){
+      const braise = document.createElement('div');
+      braise.className = 'braise';
+      braise.style.left = Math.random() * 100 + '%';
+      braise.style.setProperty('--derive', (Math.random() * 80 - 40) + 'px');
+      braise.style.animationDuration = (6 + Math.random() * 6) + 's';
+      braise.style.animationDelay = (Math.random() * 8) + 's';
+      braise.style.width = braise.style.height = (3 + Math.random() * 3) + 'px';
+      conteneurBraises.appendChild(braise);
+    }
+  }
+
+  const torii = document.getElementById('torii');
+  const hero = document.getElementById('hero');
+  if(torii && hero){
+    window.addEventListener('scroll', () => {
+      const decalage = window.scrollY;
+      if(decalage < hero.offsetHeight){
+        torii.style.transform = `translateX(-50%) translateY(${decalage * 0.25}px)`;
+      }
+    }, { passive: true });
+  }
+
+  const emblem = document.getElementById('emblem');
+  if(emblem){
+    emblem.addEventListener('mousemove', (e) => {
+      const rect = emblem.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+      const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+      emblem.querySelector('.logo').style.transform = `rotate(${x * 10}deg) scale(1.05)`;
+    });
+    emblem.addEventListener('mouseleave', () => {
+      emblem.querySelector('.logo').style.transform = '';
+    });
+  }
+}
+
+document.querySelectorAll('.question-faq').forEach(bouton => {
+  bouton.addEventListener('click', () => {
+    const item = bouton.closest('.item-faq');
+    const dejaOuvert = item.classList.contains('ouvert');
+    document.querySelectorAll('.item-faq.ouvert').forEach(autre => {
+      autre.classList.remove('ouvert');
+      autre.querySelector('.question-faq').setAttribute('aria-expanded', 'false');
+    });
+    if(!dejaOuvert){
+      item.classList.add('ouvert');
+      bouton.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+</script>
 
 </body>
 </html>
